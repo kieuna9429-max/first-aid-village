@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>응급처치 마을 방범대(EB)</title>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+
+<!-- ① 시작 화면 -->
+<section class="scene screen" id="start">
+  <div class="scene-dim"></div>
+  <div class="scene-main" style="flex-direction:column;gap:16px;padding:20px">
+    <h1 class="tab-title" id="appName" style="font-size:44px;padding:14px 36px;margin:0;border-bottom:var(--line) solid var(--wood);border-radius:var(--radius);box-shadow:var(--shadow)"></h1>
+  </div>
+  <div class="scene-bottom">
+    <div class="actors">
+      <div class="actor"><img class="pixel" src="assets/chars/director.png" alt="보건소장" data-scale="0.4"></div>
+      <div class="actor right"><img class="pixel" src="assets/player/player_happy.png" alt="보건 대원"></div>
+    </div>
+    <div class="panel dialog">
+      <span class="nametag" id="dirName"></span>
+      <div class="row">
+        <div class="line grow" id="welcome" style="min-height:0"></div>
+        <button class="btn" id="goBtn"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ② 마을 지도 -->
+<section class="village screen" id="village" hidden>
+  <div class="world" id="world"></div>
+  <div class="hud top-left"><div class="panel" id="solvedBox"></div></div>
+  <div class="hud top-right">
+    <button class="btn small" id="quickBtn"></button>
+    <button class="btn small" id="notebookBtn"></button>
+    <button class="btn small secondary" id="soundBtnV"></button>
+  </div>
+  <div class="hud bottom-left"><span class="chip" id="moveHelp"></span></div>
+  <div class="hud bottom"><button class="btn" id="helpBtn" hidden></button></div>
+</section>
+
+<!-- ③ 미션 (장소 배경) -->
+<section class="scene screen" id="mission" hidden>
+  <div class="scene-dim"></div>
+  <div class="mission-bar">
+    <div class="who"><img class="pixel" id="mWhoImg" alt=""><span class="zone" id="mZone"></span></div>
+    <div class="todo" id="mSummary"></div>
+    <span class="step-chip" id="mStep" hidden></span>
+    <div class="top-tools">
+      <button class="btn small secondary" id="soundBtnM"></button>
+      <button class="btn small secondary" id="exitBtn"></button>
+    </div>
+  </div>
+  <div class="scene-main" id="mMain"></div>
+  <div class="scene-bottom">
+    <div class="actors">
+      <div class="actor" id="npcActor"><div class="bubble speech" id="npcBubble" hidden></div><img class="pixel" id="npcImg" alt=""></div>
+      <div class="actor right" id="playerActor"><div class="bubble speech" id="playerBubble" hidden></div><img class="pixel" id="playerImg" alt="보건 대원"></div>
+    </div>
+    <div class="panel dialog" id="mDialog">
+      <span class="nametag" id="mName"></span>
+      <div class="row">
+        <div class="grow">
+          <div class="line" id="mLine" style="min-height:0"></div>
+          <div class="note" id="mNote"></div>
+          <div class="buttons" id="mReplies"></div>
+        </div>
+        <div id="mAction"></div>
+      </div>
+      <span class="next" id="mNext" hidden></span>
+    </div>
+  </div>
+</section>
+
+<script src="content.js"></script>
+<script src="js/common.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/app.js"></script>
+<script src="js/village.js"></script>
+<script src="js/mission.js"></script>
+<script src="js/cpr.js"></script>
+<script>App.init();</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>응급처치 마을 방범대(EB) · 교사용 관리자 화면</title>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/common.css">
+</head>
+<body class="teacher-page">
+<div class="teacher-wrap">
+  <div class="tab-title" id="pageTitle"></div>
+
+  <!-- 화면 1: 구역 고르기 -->
+  <main class="panel teacher-panel" id="setupView">
+    <div class="intro-chips" id="introChips"></div>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 id="zoneHead"></h2>
+        <span class="grow"></span>
+        <button class="btn small secondary" id="selectAll"></button>
+        <button class="btn small secondary" id="clearAll"></button>
+      </div>
+      <p class="note" id="zoneNote" style="margin:0 0 12px"></p>
+      <div class="zone-grid" id="zoneGrid"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2 id="soundHead"></h2></div>
+      <div class="sound-row" id="soundRow"></div>
+      <p class="note" id="soundNote" style="margin:8px 0 0"></p>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2 id="checkHead"></h2></div>
+      <div class="summary-box">
+        <span class="big" id="summary"></span>
+        <span class="note" id="timeNote"></span>
+      </div>
+      <div class="summary-box" style="margin-top:12px">
+        <button class="btn secondary" id="answerBtn"></button>
+        <button class="btn secondary" id="previewBtn"></button>
+        <span class="note" id="previewNote"></span>
+      </div>
+    </section>
+
+    <div class="make-row"><button class="btn" id="makeBtn"></button></div>
+    <button class="credits-link" id="creditsBtn"></button>
+  </main>
+
+  <!-- 화면 2: 학생용 링크와 QR -->
+  <main class="panel teacher-panel" id="qrView" hidden>
+    <h2 id="qrTitle" style="text-align:center"></h2>
+    <p class="note" id="qrGuide" style="text-align:center;margin:0 0 16px"></p>
+    <div class="qr-layout">
+      <div class="qr-box"><canvas id="qrCanvas" aria-label="학생용 QR 코드"></canvas></div>
+      <div class="qr-side">
+        <div class="panel sign" style="box-shadow:none">
+          <b id="qrSettingsHead"></b>
+          <div id="qrSettings" style="margin-top:4px"></div>
+        </div>
+        <div class="link-text" id="linkText"></div>
+        <div class="btn-col">
+          <button class="btn" id="copyBtn"></button>
+          <button class="btn" id="bigBtn"></button>
+          <button class="btn secondary" id="saveBtn"></button>
+          <button class="btn secondary" id="backBtn"></button>
+        </div>
+        <div class="note" id="qrNote"></div>
+      </div>
+    </div>
+    <button class="credits-link" id="creditsBtn2"></button>
+  </main>
+</div>
+
+<script src="content.js"></script>
+<script src="js/common.js"></script>
+<script src="js/qrcode.js"></script>
+<script src="js/teacher.js"></script>
+</body>
+</html>

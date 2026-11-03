@@ -1,0 +1,466 @@
+/* =====================================================================
+   응급처치 마을 방범대(EB) – 공통 디자인 (common.css)
+   모든 화면(학생·교사)이 이 파일 하나를 함께 씁니다.
+   화면마다 색·글꼴·버튼을 따로 만들지 않고, 여기 있는 것만 씁니다.
+   색은 지도(map) 그림의 표지판·나무·잔디 색에서 뽑았습니다.
+   글꼴: 갈무리11·갈무리9 (픽셀, OFL 무료 글꼴) – css/fonts.css에서 불러옴
+   ===================================================================== */
+
+:root {
+  /* 바탕 */
+  --grass:      #8cc27a;   /* 잔디 */
+  --grass-dark: #5e9a50;
+  --paper:      #fff3dc;   /* 패널 안쪽 */
+  --sign:       #fddaa6;   /* 지도 표지판 색 */
+  --sign-dark:  #e9b878;
+
+  /* 테두리·글자 */
+  --wood:       #a0643c;   /* 표지판 나무 테두리 */
+  --wood-dark:  #5a3b26;
+  --ink:        #4a3530;   /* 기본 글자 (표지판 글자보다 진하게) */
+  --ink-soft:   #7a625a;
+
+  /* 상태 색 – 반드시 글자·아이콘과 함께 사용 */
+  --ok:         #3f9a4e;   /* 정답 ✓ */
+  --ok-bg:      #e3f4dc;
+  --no:         #d9573a;   /* 오답 ✕ */
+  --no-bg:      #fde4dc;
+  --hint:       #3d84c6;   /* 힌트·안내 💡 */
+  --hint-bg:    #e1effb;
+  --gold:       #f5c04a;   /* 주요 버튼 */
+  --gold-dark:  #c98f1c;
+
+  /* 모양 */
+  --line: 4px;             /* 굵은 픽셀 테두리 */
+  --radius: 10px;
+  --shadow: 0 5px 0 var(--wood-dark);
+
+  /* 글꼴 */
+  /* 팀 시안 글꼴: 제목·본문 모두 갈무리(픽셀, css/fonts.css). 제목·버튼·카드 이름은 굵게(700),
+     작은 안내 글자는 Galmuri9. 글꼴을 못 불러오면 기기 기본 글꼴로 대신함 */
+  --font-title: "Galmuri11", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-body:  "Galmuri11", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+  --font-small: "Galmuri9", "Galmuri11", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--grass);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 22px;            /* 갈무리11은 11의 배수 크기에서 가장 또렷함 */
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+  word-break: keep-all;       /* 한국어 단어 단위 줄바꿈 */
+}
+
+/* ---------- 그림: 확정 그림 그대로, 픽셀이 흐려지지 않게 ---------- */
+img.pixel, .pixel img {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+img { max-width: 100%; height: auto; }   /* 비율 유지 */
+
+/* ---------- 패널 (표지판 모양) ---------- */
+.panel {
+  background: var(--paper);
+  border: var(--line) solid var(--wood);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 20px;
+}
+.panel.sign { background: var(--sign); }
+
+/* ---------- 제목 ---------- */
+.title, h1, h2, h3 { font-family: var(--font-title); font-weight: 700; margin: 0 0 8px; letter-spacing: 0; }
+h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
+
+/* ---------- 버튼 ---------- */
+.btn {
+  font-family: var(--font-title); font-weight: 700;
+  font-size: 22px;
+  color: var(--ink);
+  background: var(--gold);
+  border: var(--line) solid var(--wood-dark);
+  border-radius: var(--radius);
+  box-shadow: 0 5px 0 var(--gold-dark), 0 5px 0 var(--line) var(--wood-dark);
+  padding: 12px 26px;
+  min-height: 60px;           /* 큰 터치 영역 */
+  min-width: 60px;
+  cursor: pointer;
+  transition: transform .05s;
+}
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--gold-dark); }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.secondary { background: var(--paper); box-shadow: 0 5px 0 var(--sign-dark); }
+.btn.small { font-size: 17px; min-height: 48px; padding: 6px 14px; }
+
+/* ---------- 상단 미션 안내 바 ---------- */
+.mission-bar {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--sign);
+  border-bottom: var(--line) solid var(--wood);
+  padding: 8px 16px;
+  min-height: 72px;
+}
+.mission-bar .who { display: flex; align-items: center; gap: 10px; }
+.mission-bar .who img { width: 52px; height: 52px; object-fit: contain; }
+.mission-bar .zone { font-family: var(--font-title); font-weight: 700; font-size: 22px; }
+.mission-bar .todo { flex: 1; font-size: 19px; }
+.step-chip {
+  font-family: var(--font-title); font-size: 17px;
+  background: var(--wood); color: #fff; border-radius: 999px; padding: 4px 12px;
+}
+.top-tools { display: flex; gap: 8px; }
+
+/* ---------- 장소 화면 (주민 대화 · 구급가방 · O/X · 행동 선택 공통) ----------
+   배경: 지도에서 그 구역 장소를 확대 (scene.js) + 살짝 어둡게
+   위: 미션 안내 바 / 가운데: 문제(물품 카드·O/X 버튼·보기) / 아래: 주민·보건 대원 + 대화창 */
+.scene {
+  position: relative; width: 100%; height: 100vh; overflow: hidden;
+  background-color: var(--grass-dark); background-repeat: no-repeat;
+  display: flex; flex-direction: column;
+}
+.scene-dim { position: absolute; inset: 0; background: rgba(40, 28, 20, .38); pointer-events: none; }
+.scene > *:not(.scene-dim) { position: relative; }
+.scene-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 10px 250px 0; min-height: 0; }
+.scene-bottom { position: relative; padding: 0 24px 20px; }
+/* 주민(왼쪽) · 보건 대원(오른쪽): 대화창 위에 서 있고, 발끝 기준·같은 배율 */
+.actors { position: absolute; left: 24px; right: 24px; bottom: calc(100% - 22px); display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; }
+.actor { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.actor.right { align-items: flex-end; }
+.actor img { display: block; }
+
+/* 문제를 올려놓는 반투명 판 */
+.board { background: rgba(255, 243, 220, .93); border: var(--line) solid var(--wood); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px 18px; }
+
+/* ---------- 말풍선 ---------- */
+.bubble {
+  position: relative; background: #fff;
+  border: 3px solid var(--wood-dark); border-radius: 14px;
+  padding: 10px 16px; font-size: 19px; max-width: 230px;
+}
+.bubble::after {
+  content: ""; position: absolute; left: 32px; bottom: -14px;
+  border: 7px solid transparent; border-top-color: var(--wood-dark);
+}
+
+/* ---------- 대화창 (화면 아래) ---------- */
+.dialog { position: relative; padding-top: 26px; }
+.dialog .nametag {
+  position: absolute; top: -14px; left: 18px;
+  font-family: var(--font-title); font-size: 19px;
+  background: var(--wood); color: #fff;
+  border: 3px solid var(--wood-dark); border-radius: 8px; padding: 2px 14px;
+}
+.dialog .line { font-size: 22px; line-height: 1.6; min-height: 66px; }
+.dialog .next { position: absolute; right: 16px; bottom: 8px; font-size: 16px; color: var(--ink-soft); animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- 물품 카드 ---------- */
+.item-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.item-card {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  background: #fff; border: var(--line) solid var(--sign-dark); border-radius: var(--radius);
+  box-shadow: 0 4px 0 var(--sign-dark);
+  padding: 10px 8px; min-height: 150px; cursor: pointer;
+  font-size: 22px; font-weight: 700; text-align: center;
+}
+.item-card img { height: 78px; width: auto; }
+.item-card.picked { border-color: var(--hint); box-shadow: 0 4px 0 var(--hint); background: var(--hint-bg); }
+.item-card.picked::before {
+  content: "✓ 담았어요"; position: absolute; top: -12px; right: -8px;
+  font-family: var(--font-title); font-size: 14px; color: #fff;
+  background: var(--hint); border: 2px solid var(--wood-dark); border-radius: 8px; padding: 1px 8px;
+}
+
+/* ---------- 결과 표시: 색 + 아이콘 + 글자 ---------- */
+.result { border-radius: var(--radius); padding: 10px 14px; border: 3px solid; display: flex; gap: 10px; align-items: flex-start; }
+.result .icon { font-family: var(--font-title); font-size: 22px; line-height: 1.2; flex: none; }
+.result.ok   { background: var(--ok-bg);   border-color: var(--ok); }
+.result.ok .icon { color: var(--ok); }
+.result.no   { background: var(--no-bg);   border-color: var(--no); }
+.result.no .icon { color: var(--no); }
+.result.hint { background: var(--hint-bg); border-color: var(--hint); }
+.result.hint .icon { color: var(--hint); }
+
+/* ---------- O/X 버튼 ---------- */
+.ox { display: flex; gap: 24px; justify-content: center; }
+.ox .btn { font-family: var(--font-title); font-size: 64px; width: 160px; height: 140px; line-height: 1; }
+.ox .btn.o { background: #e3f4dc; box-shadow: 0 6px 0 var(--ok); }
+.ox .btn.x { background: #fde4dc; box-shadow: 0 6px 0 var(--no); }
+
+/* ---------- 팝업 ---------- */
+.overlay { position: fixed; inset: 0; background: rgba(40, 28, 20, .55); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.popup { width: min(560px, 92vw); text-align: center; }
+.popup .actions { display: flex; gap: 12px; justify-content: center; margin-top: 14px; }
+
+/* ---------- 작은 화면(휴대폰 세로) 대응 ---------- */
+@media (max-width: 700px) {
+  body { font-size: 18px; }
+  .item-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage .actor { height: 150px; }
+  .mission-bar { flex-wrap: wrap; }
+}
+
+/* 작은 안내 글자 (Galmuri9) */
+.note, .helpline, .dialog .next { font-family: var(--font-small); font-size: 18px; }
+
+/* O/X 버튼 기호: 갈무리 글꼴의 ◯ 와 × 사용 (영문 O는 숫자 0처럼 보여서). × 가 작게 그려져 조금 키움 */
+.ox .btn.x { font-size: 96px; }
+
+/* ---------- 팝업 안쪽 · 잠깐 안내 ---------- */
+.popup.wide { width: min(900px, 94vw); text-align: left; }
+.popup .popup-body { max-height: 62vh; overflow-y: auto; }
+.popup h2 { text-align: center; }
+.toast {
+  position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); z-index: 80;
+  background: var(--wood-dark); color: #fff; font-family: var(--font-title); font-weight: 700;
+  padding: 12px 22px; border-radius: var(--radius); box-shadow: var(--shadow);
+}
+
+/* ---------- 켜기/끄기 버튼 (소리 설정) ---------- */
+.switch {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-title); font-weight: 700; font-size: 20px; color: var(--ink);
+  background: var(--paper); border: 3px solid var(--sign-dark); border-radius: var(--radius);
+  padding: 8px 14px; min-height: 56px; cursor: pointer;
+}
+.switch .state { border-radius: 999px; padding: 2px 12px; font-size: 17px; background: #d8ccc0; color: var(--ink); }
+.switch[aria-pressed="true"] { border-color: var(--ok); background: var(--ok-bg); }
+.switch[aria-pressed="true"] .state { background: var(--ok); color: #fff; }
+
+/* =====================================================================
+   교사용 관리자 화면
+   ===================================================================== */
+.teacher-page { min-height: 100vh; padding: 28px 20px 40px; background: var(--grass-dark); position: relative; }
+/* 지도 배경을 화면에 고정 (태블릿에서도 동작하도록 고정 층으로) + 살짝 어둡게 */
+.teacher-page::before { content: ""; position: fixed; inset: 0; background: linear-gradient(rgba(40, 28, 20, .38), rgba(40, 28, 20, .38)), url(../assets/map/map.webp) center / cover; }
+.teacher-wrap { position: relative; max-width: 1180px; margin: 0 auto; }
+.tab-title {
+  display: table; margin: 0 auto -4px; position: relative; z-index: 1;
+  font-family: var(--font-title); font-weight: 700; font-size: 24px;
+  background: var(--sign); border: var(--line) solid var(--wood); border-bottom: 0;
+  border-radius: var(--radius) var(--radius) 0 0; padding: 10px 26px;
+}
+.teacher-panel { padding: 22px 26px 26px; }
+.intro-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 4px; }
+.chip { font-family: var(--font-small); font-size: 16px; background: var(--sign); border: 2px solid var(--sign-dark); border-radius: 999px; padding: 3px 12px; }
+.section { margin-top: 22px; }
+.section-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.section-head h2 { margin: 0; font-size: 24px; }
+.section-head .grow { flex: 1; }
+
+/* 구역 선택 카드 10장 */
+.zone-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.zone-card {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: #fff; border: var(--line) solid var(--sign-dark); border-radius: var(--radius);
+  box-shadow: 0 4px 0 var(--sign-dark); padding: 12px 8px 10px; cursor: pointer;
+  font-family: inherit; color: var(--ink); text-align: center;
+}
+.zone-card .pic { height: 120px; display: flex; align-items: flex-end; }
+.zone-card .pic img { height: 100%; width: auto; }
+.zone-card .zname { font-family: var(--font-title); font-weight: 700; font-size: 19px; line-height: 1.3; }
+.zone-card .zplace { font-family: var(--font-small); font-size: 15px; color: var(--ink-soft); }
+.zone-card .ztime { font-family: var(--font-small); font-size: 15px; background: var(--sign); border-radius: 999px; padding: 1px 10px; }
+.zone-card[aria-pressed="true"] { border-color: var(--ok); box-shadow: 0 4px 0 var(--ok); background: var(--ok-bg); }
+.zone-card[aria-pressed="true"]::before {
+  content: "✓ 선택"; position: absolute; top: -12px; right: -6px;
+  font-family: var(--font-title); font-weight: 700; font-size: 14px; color: #fff;
+  background: var(--ok); border: 2px solid var(--wood-dark); border-radius: 8px; padding: 1px 8px;
+}
+.sound-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.summary-box { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.summary-box .big { font-family: var(--font-title); font-weight: 700; font-size: 24px; }
+.make-row { text-align: center; margin-top: 26px; }
+.make-row .btn { font-size: 26px; padding: 14px 40px; }
+.credits-link { display: block; margin: 22px auto 0; background: none; border: 0; font-family: var(--font-small); font-size: 16px; color: var(--ink-soft); text-decoration: underline; cursor: pointer; min-height: 44px; }
+
+/* 정답·해설 미리보기 */
+.answer-zone { border-top: 3px dashed var(--sign-dark); padding: 12px 0; }
+.answer-zone h3 { font-size: 20px; }
+.answer-zone dl { margin: 0; display: grid; grid-template-columns: 170px 1fr; gap: 4px 12px; font-size: 18px; }
+.answer-zone dt { font-family: var(--font-title); font-weight: 700; color: var(--wood); }
+.answer-zone dd { margin: 0; }
+
+/* 링크·QR */
+.qr-layout { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; }
+.qr-box { background: #fff; border: var(--line) solid var(--wood); border-radius: var(--radius); padding: 14px; }
+.qr-box canvas { display: block; image-rendering: pixelated; }
+.qr-side { flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 12px; }
+.link-text { font-family: var(--font-small); font-size: 15px; word-break: break-all; background: #fff; border: 2px solid var(--sign-dark); border-radius: 8px; padding: 8px 10px; user-select: all; }
+.btn-col { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.qr-full { position: fixed; inset: 0; z-index: 90; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2vh; cursor: pointer; }
+.qr-full .big-text { font-family: var(--font-title); font-weight: 700; font-size: clamp(28px, 4vw, 52px); }
+.qr-full canvas { image-rendering: pixelated; }
+.qr-full .close-note { font-family: var(--font-small); font-size: 18px; color: var(--ink-soft); }
+
+@media (max-width: 1000px) { .zone-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px)  { .zone-grid { grid-template-columns: repeat(2, 1fr); } .answer-zone dl { grid-template-columns: 1fr; } }
+
+/* =====================================================================
+   학생 화면 – 마을 지도
+   ===================================================================== */
+.screen[hidden] { display: none !important; }
+.village { position: fixed; inset: 0; overflow: hidden; background: var(--grass-dark); touch-action: none; user-select: none; }
+.world { position: absolute; left: 0; top: 0; transform-origin: 0 0; background: url(../assets/map/map.webp) 0 0 / 100% 100% no-repeat; cursor: pointer; }
+.npc { position: absolute; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; pointer-events: none; }
+.npc img { display: block; }
+.marker {
+  font-family: var(--font-title); font-weight: 700; font-size: 20px; line-height: 1;
+  border: 3px solid var(--wood-dark); border-radius: 10px; padding: 4px 9px; margin-bottom: 4px; background: #fff;
+}
+.marker.need { background: var(--gold); font-size: 26px; animation: bob 1s ease-in-out infinite; }
+.marker.done { background: var(--ok); color: #fff; }
+.marker.lock { background: #d8ccc0; font-size: 16px; }
+@keyframes bob { 50% { transform: translateY(-6px); } }
+.npc-name { font-family: var(--font-small); font-size: 15px; background: rgba(255, 243, 220, .92); border: 2px solid var(--wood); border-radius: 6px; padding: 0 6px; margin-top: 2px; white-space: nowrap; }
+.player-sprite { position: absolute; width: 112px; height: 150px; transform: translate(-50%, -100%); background: url(../assets/player/player_walk.png) 0 0 / 448px 600px no-repeat; image-rendering: pixelated; pointer-events: none; }
+.target-dot { position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px; border: 3px solid #fff; border-radius: 50%; pointer-events: none; animation: fade .6s forwards; }
+@keyframes fade { to { opacity: 0; transform: scale(1.8); } }
+
+.hud { position: absolute; z-index: 5; }
+.hud.top-left { left: 14px; top: 14px; }
+.hud.top-right { right: 14px; top: 14px; display: flex; gap: 8px; }
+.hud.bottom { left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; pointer-events: none; }
+.hud.bottom .btn { pointer-events: auto; font-size: 26px; padding: 14px 34px; }
+.hud.bottom-left { left: 14px; bottom: 14px; }
+.hud .panel { padding: 8px 14px; font-family: var(--font-title); font-weight: 700; }
+.quick-list { display: flex; flex-direction: column; gap: 10px; }
+.quick-list .btn { display: flex; align-items: center; gap: 12px; text-align: left; font-size: 19px; }
+.quick-list .btn img { height: 48px; width: auto; }
+.quick-list .btn .done-tag { margin-left: auto; color: var(--ok); }
+
+/* =====================================================================
+   학생 화면 – 미션
+   ===================================================================== */
+.mission-bar .who img { height: 52px; width: auto; }
+.board.scroll { max-height: 100%; overflow-y: auto; }
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+.choice {
+  display: flex; align-items: center; gap: 10px; text-align: left;
+  font-family: var(--font-body); font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.4;
+  background: #fff; border: var(--line) solid var(--sign-dark); border-radius: var(--radius); box-shadow: 0 4px 0 var(--sign-dark);
+  padding: 12px 14px; min-height: 84px; cursor: pointer;
+}
+.choice .num { font-family: var(--font-title); font-size: 24px; flex: none; }
+.choice.wrong { border-color: var(--no); background: var(--no-bg); box-shadow: 0 4px 0 var(--no); }
+.choice.wrong .num::after { content: " ✕"; color: var(--no); }
+.choice.right { border-color: var(--ok); background: var(--ok-bg); box-shadow: 0 4px 0 var(--ok); }
+.choice.right .num::after { content: " ✓"; color: var(--ok); }
+.choice:disabled { cursor: default; }
+.answer-list { display: flex; flex-direction: column; gap: 8px; }
+.answer-list h3 { margin: 6px 0 2px; font-size: 20px; }
+.answer-row { display: flex; gap: 12px; align-items: center; }
+.answer-row img { height: 52px; width: 70px; object-fit: contain; flex: none; }
+.answer-row .name { font-family: var(--font-title); font-weight: 700; }
+.answer-row .fb { font-size: 18px; }
+.dialog .row { display: flex; align-items: flex-end; gap: 16px; }
+.dialog .row .grow { flex: 1; min-width: 0; }
+.dialog .buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.dialog.clickable { cursor: pointer; }
+.big-title { font-family: var(--font-title); font-weight: 700; font-size: 33px; text-align: center; margin: 0 0 6px; }
+.notebook {
+  background: #fffdf4 repeating-linear-gradient(transparent 0 43px, #e9dcc2 43px 44px);
+  border: var(--line) solid var(--wood); border-left: 14px solid var(--no); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 16px 22px; width: 100%; max-height: 100%; overflow-y: auto;
+}
+.notebook ol { margin: 4px 0; padding: 0; list-style: none; }
+.notebook li { line-height: 44px; font-size: 20px; }
+.notebook .sub { font-family: var(--font-title); font-weight: 700; color: var(--wood); margin-top: 6px; }
+.notebook .foot { color: var(--no); font-weight: 700; line-height: 44px; }
+.complete-box { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.complete-box .badge { height: min(300px, 36vh); width: auto; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.badge-row img { height: 120px; width: auto; }
+.speech { position: absolute; bottom: 100%; left: 0; margin-bottom: 8px; }
+.actor { position: relative; }
+.actor.right .speech { left: auto; right: 0; }
+.actor.right .speech.bubble::after { left: auto; right: 32px; }
+
+@media (max-width: 900px) {
+  .scene-main { padding: 10px 14px 0; }
+  .choices { grid-template-columns: 1fr; }
+  .choice { min-height: 60px; font-size: 18px; }
+}
+
+/* 휴대폰 세로 화면 (웹 대응만 – 수업은 태블릿·PC 우선) */
+@media (max-width: 700px) {
+  .scene { height: 100dvh; }
+  .scene-main { padding: 8px 10px 0; overflow-y: auto; align-items: flex-start; }
+  .mission-bar { gap: 6px; padding: 6px 8px; min-height: 0; }
+  .mission-bar .todo { display: none; }
+  .mission-bar .zone { font-size: 17px; }
+  .actor { transform: scale(.5); transform-origin: bottom left; }
+  .actor.right { transform-origin: bottom right; }
+  .speech { display: none; }
+  .dialog .row { flex-direction: column; align-items: stretch; }
+  .dialog .line { font-size: 19px; }
+  .item-card { min-height: 110px; font-size: 18px; }
+  .item-card img { height: 54px; }
+  .ox .btn { width: 120px; height: 110px; font-size: 52px; }
+  .hud.bottom-left { display: none; }
+}
+
+/* =====================================================================
+   10구역 심폐소생술·AED
+   ===================================================================== */
+.cpr-figure { position: relative; display: inline-block; flex: none; }
+.cpr-figure > img:first-child { height: 100%; width: auto; display: block; }
+.zone-hi { position: absolute; border: 4px solid var(--no); background: rgba(217, 87, 58, .25); border-radius: 8px; }
+.hand-dot { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--no); border: 3px solid #fff; box-shadow: 0 0 0 3px var(--no); }
+.method-list { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; font-size: 20px; }
+.method-list dt { font-family: var(--font-title); font-weight: 700; color: var(--wood); }
+.method-list dd { margin: 0; }
+
+/* 리듬 트레이너 */
+.rhythm { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.rhythm-top { background: rgba(255, 243, 220, .93); border: 2px solid var(--wood); border-radius: 8px; padding: 4px 12px; text-align: center; }
+.rhythm-body { display: flex; gap: 18px; align-items: center; }
+/* 가슴 압박 장면 (cpr_press 그림 한 장) */
+.press-scene { cursor: pointer; }
+.press-scene .presser { transform-origin: 50% 100%; }
+/* 누를 때마다 살짝 눌렸다 올라옴 + 손 위치에 '꾹' 표시 (누르는 시늉) */
+.presser.down { animation: press .22s ease-out; }
+@keyframes press { 45% { transform: translateY(2.5%) scaleY(.975); } }
+.press-ring { position: absolute; width: 18%; aspect-ratio: 1; transform: translate(-50%, -50%) scale(.3); border: 5px solid var(--gold); border-radius: 50%; opacity: 0; pointer-events: none; }
+.press-ring.down { animation: ring .35s ease-out; }
+@keyframes ring { 0% { opacity: 1; transform: translate(-50%, -50%) scale(.3); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.1); } }
+.rhythm-panel { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 420px; }
+.beat { width: 64px; height: 64px; border-radius: 50%; border: 4px solid var(--wood-dark); background: var(--paper); }
+.beat.on { animation: beat .35s ease-out; }
+@keyframes beat { 0% { background: var(--gold); transform: scale(1.2); } 100% { background: var(--paper); transform: scale(1); } }
+.counters { display: flex; gap: 18px; white-space: nowrap; font-family: var(--font-title); font-weight: 700; font-size: 24px; }
+.judge { font-family: var(--font-title); font-weight: 700; font-size: 22px; min-height: 33px; text-align: center; }
+.judge.good { color: var(--ok); }
+.judge.bad { color: var(--no); }
+.press-btn { font-size: 30px; padding: 16px 70px; touch-action: manipulation; }
+
+/* AED 본체 버튼(그림 위 투명 단추) · 패드 */
+.aed-btn { position: absolute; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; border: 0; background: transparent; cursor: pointer; padding: 0; }
+.aed-btn.glow:not(:disabled) { box-shadow: 0 0 0 5px #fff, 0 0 0 9px var(--gold); animation: glow 1s ease-in-out infinite; }
+@keyframes glow { 50% { box-shadow: 0 0 0 5px #fff, 0 0 0 14px var(--gold); } }
+.aed-voice { font-family: var(--font-title); font-weight: 700; background: #222; color: #9ff59f; border-radius: 8px; padding: 8px 14px; max-width: 640px; text-align: center; }
+.pad-tray { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.pad { background: none; border: 3px dashed transparent; border-radius: 10px; padding: 4px; cursor: grab; touch-action: none; position: relative; z-index: 3; }
+.pad img { height: min(130px, 17vh); width: auto; display: block; pointer-events: none; }
+.pad.selected { border-color: var(--hint); background: var(--hint-bg); }
+.pad.dragging { cursor: grabbing; z-index: 20; }
+.pad-stuck { position: absolute; height: 17%; width: auto; transform: translate(-50%, -50%); pointer-events: none; }
+.zone-flash { position: absolute; border-radius: 8px; pointer-events: none; }
+.zone-flash.on { border: 3px dashed var(--ok); animation: softflash 1.2s ease-in-out infinite; }
+@keyframes softflash { 50% { background: rgba(63, 154, 78, .28); } }
+
+/* 마을의 응급처치 수첩 목록 (배지 카드) */
+.nb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.nb-card { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px; border-radius: var(--radius); border: var(--line) solid var(--sign-dark); background: #fff; font-family: var(--font-title); font-weight: 700; font-size: 17px; color: var(--ink); text-align: center; }
+.nb-card.done { cursor: pointer; box-shadow: 0 4px 0 var(--sign-dark); }
+.nb-card.done:active { transform: translateY(3px); }
+.nb-card img { height: 120px; width: auto; }
+.nb-card.locked { background: var(--paper); border-style: dashed; }
+.nb-q { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 56px; color: var(--sign-dark); }

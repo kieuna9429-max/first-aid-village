@@ -1,0 +1,119 @@
+원본 파일	정리된 파일	메모
+map.png(도토리 숲 수정본)	map/map.webp	2752×1536 유지, 747KB
+director.png	chars/director.png	
+zone10_turtle.png	chars/zone10_turtle.png	
+zone1_raccoon.png	chars/zone1_raccoon.png	
+zone2_swallow.png	chars/zone2_swallow.png	
+zone3_tiger.png	chars/zone3_tiger.png	
+zone4_bear.png	chars/zone4_bear.png	
+zone5_elephant.png	chars/zone5_elephant.png	
+zone6_rabbit.png	chars/zone6_rabbit.png	
+zone7_crocodile.png	chars/zone7_crocodile.png	
+zone8_squirrel.png	chars/zone8_squirrel.png	흰 배경 → 투명
+zone9_woodpecker.png	chars/zone9_woodpecker.png	흰 배경 → 투명
+player.png	player/player_walk.png	4×4 걷기 칸, 칸 크기 112×150, 발끝 기준 정렬
+player.png	player/player_face.png	얼굴 아이콘 128×128
+player_call.png	player/player_call.png	
+player_explain.png	player/player_explain.png	
+player_happy.png	player/player_happy.png	
+player_kit.png	player/player_kit.png	
+player_surprised.png	player/player_surprised.png	
+player_think.png	player/player_think.png	
+player_thumb.png	player/player_thumb.png	
+player_worry.png	player/player_worry.png	
+npc_01_care.png	npc/npc_01_care.png	
+npc_01_done.png	npc/npc_01_done.png	
+npc_01_hurt.png	npc/npc_01_hurt.png	
+npc_02_care.png	npc/npc_02_care.png	
+npc_02_done.png	npc/npc_02_done.png	
+npc_02_hurt.png	npc/npc_02_hurt.png	
+npc_03_care.png	npc/npc_03_care.png	
+npc_03_done.png	npc/npc_03_done.png	
+npc_03_hurt.png	npc/npc_03_hurt.png	
+npc_04_care.png	npc/npc_04_care.png	
+npc_04_done.png	npc/npc_04_done.png	
+npc_04_hurt.png	npc/npc_04_hurt.png	
+npc_05_care.png	npc/npc_05_care.png	
+npc_05_done.png	npc/npc_05_done.png	
+npc_05_hurt.png	npc/npc_05_hurt.png	
+npc_06_1_care.png	npc/npc_06_1_care.png	
+npc_06_1_hurt.png	npc/npc_06_1_hurt.png	
+npc_06_2_care.png	npc/npc_06_2_care.png	
+npc_06_2_hurt.png	npc/npc_06_2_hurt.png	
+npc_07_care.png	npc/npc_07_care.png	
+npc_07_done.png	npc/npc_07_done.png	
+npc_07_hurt.png	npc/npc_07_hurt.png	
+npc_08_care.png	npc/npc_08_care.png	
+npc_08_hurt.png	npc/npc_08_hurt.png	
+npc_09_1_care.png	npc/npc_09_1_care.png	
+npc_09_1_hurt.png	npc/npc_09_1_hurt.png	
+npc_09_2_care.png	npc/npc_09_2_care.png	
+npc_09_2_hurt.png	npc/npc_09_2_hurt.png	
+antihistamine.png	items/antihistamine.png	
+bandage.png	items/bandage.png	
+blanket.png	items/blanket.png	
+burn_ointment.png	items/burn_ointment.png	
+candy.png	items/candy.png	
+cola.png	items/cola.png	
+cold_medicine.png	items/cold_medicine.png	
+cold_pack.png	items/cold_pack.png	
+cotton_swab.png	items/cotton_swab.png	
+dirt.png	items/dirt.png	
+disinfectant.png	items/disinfectant.png	
+doenjang.png	items/doenjang.png	
+elastic_bandage.png	items/elastic_bandage.png	
+emergency_contacts.png	items/emergency_contacts.png	
+epipen.png	items/epipen.png	
+gauze.png	items/gauze.png	
+gloves.png	items/gloves.png	
+hot_pack.png	items/hot_pack.png	
+ice_cup.png	items/ice_cup.png	
+massager.png	items/massager.png	
+milk.png	items/milk.png	
+painkiller.png	items/painkiller.png	
+phone.png	items/phone.png	
+pin_needle.png	items/pin_needle.png	
+plastic_card.png	items/plastic_card.png	
+saline.png	items/saline.png	
+skin_ointment.png	items/skin_ointment.png	
+soapy_water.png	items/soapy_water.png	
+splint.png	items/splint.png	
+tissue.png	items/tissue.png	
+toothpaste.png	items/toothpaste.png	
+towel.png	items/towel.png	
+warm_water.png	items/warm_water.png	
+water_bottle.png	items/water_bottle.png	
+water_faucet.png	items/water_faucet.png	
+badge_01.png	badges/badge_01.webp	672×744, 47KB
+badge_02.png	badges/badge_02.webp	672×744, 51KB
+badge_03.png	badges/badge_03.webp	672×744, 59KB
+badge_04.png	badges/badge_04.webp	672×744, 46KB
+badge_05.png	badges/badge_05.webp	672×744, 45KB
+badge_06.png	badges/badge_06.webp	672×744, 48KB
+badge_07.png	badges/badge_07.webp	672×744, 48KB
+badge_08.png	badges/badge_08.webp	672×744, 56KB
+badge_09.png	badges/badge_09.webp	672×744, 47KB
+badge_10.png	badges/badge_10.webp	672×744, 48KB
+01_쓰러진_사람.png	cpr/cpr_patient.webp	1024×683 (원본 비율 유지, 여백 자르지 않음), 55KB
+02_가슴압박_보건대원.png	cpr/cpr_rescuer.webp	1024×683 (원본 비율 유지, 여백 자르지 않음), 58KB
+03_AED_본체.png	cpr/aed_device.webp	1024×683 (원본 비율 유지, 여백 자르지 않음), 49KB
+04_AED_패드_1.png	cpr/aed_pad_1.webp	300×436 (원본 비율 유지, 여백 자르지 않음), 16KB
+05_AED_패드_2.png	cpr/aed_pad_2.webp	300×435 (원본 비율 유지, 여백 자르지 않음), 16KB
+06_AED_상체정면.png	cpr/cpr_torso.webp	800×960 (원본 비율 유지, 여백 자르지 않음), 95KB
+1.Button Click.wav	sounds/click.mp3	
+2.ui_selection.wav	sounds/popup.mp3	
+3.item-equip.mp3	sounds/item.mp3	
+4.correct.wav	sounds/correct.mp3	
+5.incorrect-chime.wav	sounds/wrong.mp3	
+6.level-up-01.mp3	sounds/badge.mp3	
+7.level-up-03.mp3	sounds/lesson_complete.mp3	
+8.double-beep.wav	sounds/beep.mp3	
+9.sticker_click.wav	sounds/pad_stick.mp3	
+10.jmayoff__laser.wav	sounds/aed.mp3	
+11.alarm-jwmcopa-sample.flac	sounds/siren.mp3	1.5초로 자름
+12.text_click.wav	sounds/text.mp3	
+Little_Hands_Big_Help(#Ubc30#Uacbd#Uc74c).mp3	sounds/bgm.mp3	배경음
+ab8f058f-image.png(두 사람 함께 있는 압박 그림, 체크무늬 배경 제거)	cpr/cpr_press.webp	배경만 지움, 760px로 축소
+(2026-11-03 새로 만든 그림) 쓰러진 어른 누운 그림	cpr/cpr_patient.webp	여백 자르고 1000px
+(2026-11-03 새로 만든 그림) 가슴 압박 장면	cpr/cpr_press.webp	여백 자르고 900px
+(2026-11-03 새로 만든 그림) 상체 정면	cpr/cpr_torso.webp	좌표 기준이라 자르지 않음, 800px

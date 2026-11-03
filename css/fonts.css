@@ -1,0 +1,5 @@
+/* 갈무리 글꼴 (v2.40.4, SIL Open Font License – assets/fonts/Galmuri-LICENSE-OFL.txt)
+   사이트 안에 글꼴 파일을 함께 넣어 두어, 학교망에서 글꼴 사이트가 막혀도 그대로 보입니다. */
+@font-face { font-family: Galmuri11; font-weight: 400; font-display: swap; src: url('../assets/fonts/Galmuri11.woff2') format('woff2'); }
+@font-face { font-family: Galmuri11; font-weight: 700; font-display: swap; src: url('../assets/fonts/Galmuri11-Bold.woff2') format('woff2'); }
+@font-face { font-family: Galmuri9;  font-weight: 400; font-display: swap; src: url('../assets/fonts/Galmuri9.woff2') format('woff2'); }
