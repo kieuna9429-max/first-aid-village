@@ -127,14 +127,15 @@ const CPR = {
   rhythmIntro() {
     const R = this.P.rhythm;
     this.chip(4);
-    this.turtle(R.bubble); this.hidePlayer();
-    Mission.setMain(`<div style="display:flex;gap:18px;align-items:center;width:100%">
-      ${this.pressScene(Math.min(300, innerHeight * 0.37))}
-      <div class="board" style="flex:1;display:flex;flex-direction:column;gap:8px">
-        <div class="result hint"><span class="icon">💡</span><div><b>${esc(R.startNotice)}</b></div></div>
-        <div>⏱ ${esc(R.guideBeat)}</div><div>🔢 ${esc(R.guideSet)}</div>
-        <div class="result ok"><span class="icon">✓</span><div>${esc(R.remember)}</div></div>
-        <div class="note">${esc(R.inputGuide)}</div></div></div>`);
+    this.turtle(); this.hidePlayer();   // 촌장님 말은 아래 대화창에 나오므로 말풍선은 생략 (글상자 자리 확보)
+    Mission.setMain(`<div class="board rhythm-guide">
+      <div class="result hint"><span class="icon">💡</span><div><b>${esc(R.startNotice)}</b></div></div>
+      <div class="rg-row">
+        ${this.pressScene(Math.min(190, innerHeight * 0.22))}
+        <div class="rg-text"><div>⏱ ${esc(R.guideBeat)}</div><div>🔢 ${esc(R.guideSet)}</div>
+          <div class="note">${esc(R.inputGuide)}</div></div>
+      </div>
+      <div class="result ok"><span class="icon">✓</span><div>${esc(R.remember)}</div></div></div>`);
     this.say(R.bubble, { action: { label: R.startButton, onClick: () => this.rhythm() } });
   },
 

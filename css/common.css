@@ -126,7 +126,7 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 }
 .scene-dim { position: absolute; inset: 0; background: rgba(40, 28, 20, .38); pointer-events: none; }
 .scene > *:not(.scene-dim) { position: relative; }
-.scene-main { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 10px 250px 8px; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.scene-main { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 10px clamp(20px, 19vw, 250px) 8px; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 /* 내용이 짧으면 가운데, 화면보다 길면 위에서부터 보이고 이 칸 안에서 스크롤 (대화창 뒤로 숨지 않게) */
 .scene-main > * { margin-top: auto; margin-bottom: auto; }
 .scene-bottom { position: relative; padding: 0 24px 20px; }
@@ -470,3 +470,11 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 /* 10구역 3지선다: 보기 칸을 촘촘하게 (설명이 한 화면에 들어오게) */
 .choices.compact { gap: 8px; }
 .choices.compact .choice { min-height: 0; padding: 8px 12px; font-size: 19px; }
+
+/* 리듬 연습 안내: 옆으로 넓은 글상자 한 장 (아이패드에서도 한 화면에) */
+.rhythm-guide { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 10px; }
+.rg-row { display: flex; gap: 16px; align-items: center; }
+.rg-text { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+
+/* 말풍선이 가운데 글상자를 가리지 않게 화면 너비에 맞춰 폭 제한 */
+.speech.bubble { max-width: min(230px, 17vw); }
