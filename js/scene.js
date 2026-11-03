@@ -27,7 +27,7 @@ function setPlaceBackground(el, zone, zoom = PLACE_ZOOM) {
 const ACTOR_SCALE = 0.8;
 function sizeActors(root = document, scale = ACTOR_SCALE) {
   root.querySelectorAll('.actor img').forEach(img => {
-    const k = Number(img.dataset.scale) || scale;   // 얼굴만 있는 그림(보건소장)은 data-scale로 따로
+    const k = (Number(img.dataset.scale) || scale) * Math.min(1, innerHeight / 860);   // 세로가 짧은 화면이면 같은 비율로 조금 작게   // 얼굴만 있는 그림(보건소장)은 data-scale로 따로
     const set = () => { img.style.height = (img.naturalHeight * k) + 'px'; img.style.width = 'auto'; };
     img.complete ? set() : img.addEventListener('load', set);
   });

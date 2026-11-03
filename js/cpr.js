@@ -222,48 +222,37 @@ const CPR = {
   },
 
   /* 110 BPM 박자: 시각 표시는 항상, 클릭음은 메트로놈이 켜져 있을 때만 (소리는 코드로 생성) */
-  /* 110 BPM 박자: 박자 한 칸 길이(60/110초)의 소리를 만들어 끊김 없이 반복 재생 → 기기가 정확한 간격으로 '딱'
-     시각 박자(깜빡이는 동그라미)도 같은 시계에 맞춰 움직임. 메트로놈이 꺼져 있으면 시각 박자만 */
+  /* 110 BPM 박자: 코드로 만든 '정확히 110 BPM으로 딱딱 소리가 들어 있는 2분짜리 소리 파일'(sounds/metronome_110bpm.mp3)을
+     효과음과 같은 방식으로 한 번 틀어 둠 → 박자 간격은 파일 안에 정해져 있어 흔들리지 않음 (아이패드에서도 들림)
+     깜빡이는 동그라미는 이 소리의 재생 시간에 맞춰 움직임. 메트로놈이 꺼져 있으면 시각 박자만 */
   startMetronome(bpm, onBeat) {
     this.stopMetronome();
     const period = 60 / bpm;
-    let clock = null;                                    // 지금 몇 초째인지 알려 주는 시계
+    let clock = null;
     if (App.sound.metronome) {
-      try {
-        if (navigator.audioSession) navigator.audioSession.type = 'playback';   // 아이패드 무음 모드에서도 소리 나게
-        const ctx = this.audioCtx || (this.audioCtx = new (window.AudioContext || window.webkitAudioContext)());
-        ctx.resume();
-        // 아이패드: 소리 없는 파일을 함께 틀어 두면 무음 스위치가 켜져 있어도 박자 소리가 남
-        if (!this.silence) { this.silence = new Audio('assets/sounds/silence.mp3'); this.silence.loop = true; }
-        this.silence.play().catch(() => {});
-        const sr = ctx.sampleRate, len = Math.round(period * sr);
-        const buf = ctx.createBuffer(1, len, sr), d = buf.getChannelData(0);
-        for (let i = 0; i < Math.min(len, sr * 0.06); i++) d[i] = 0.6 * Math.sin(2 * Math.PI * 1000 * i / sr) * Math.exp(-i / (sr * 0.012));
-        const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
-        const gain = ctx.createGain(); gain.gain.value = 0.9;
-        src.connect(gain).connect(ctx.destination);
-        const t0 = ctx.currentTime + 0.05;
-        src.start(t0);
-        this.metroSrc = src;
-        clock = () => ctx.currentTime - t0;
-      } catch (e) { clock = null; }
+      if (!this.metroAudio) { this.metroAudio = new Audio('assets/sounds/metronome_110bpm.mp3'); this.metroAudio.loop = true; this.metroAudio.preload = 'auto'; }
+      const a = this.metroAudio;
+      try { a.currentTime = 0; } catch (e) {}
+      a.volume = 1;
+      a.play().catch(() => {});        // 버튼을 누른 순간 바로 재생 (아이패드 소리 허용)
+      clock = () => (a.paused ? null : a.currentTime);
     }
-    if (!clock) { const s0 = performance.now(); clock = () => (performance.now() - s0) / 1000; }
+    const s0 = performance.now();
+    const timeNow = () => { const t = clock && clock(); return t == null ? (performance.now() - s0) / 1000 : t; };
     let last = -1;
     const frame = () => {
-      const beat = Math.floor(clock() / period);
-      if (beat >= 0 && beat !== last) { last = beat; onBeat(); }
+      const beat = Math.floor(timeNow() / period + 0.02);
+      if (beat !== last) { last = beat; onBeat(); }
       this.metroRaf = requestAnimationFrame(frame);
     };
     this.metroRaf = requestAnimationFrame(frame);
   },
   stopMetronome() {
     cancelAnimationFrame(this.metroRaf);
-    clearInterval(this.metroTimer);
-    if (this.metroSrc) { try { this.metroSrc.stop(); } catch (e) {} this.metroSrc = null; }
-    if (this.silence) this.silence.pause();
+    if (this.metroAudio) this.metroAudio.pause();
     if (this.keyHandler) { removeEventListener('keydown', this.keyHandler); this.keyHandler = null; }
   },
+
 
 
   /* ---------- 4. 자동 심장 충격기(AED) ---------- */

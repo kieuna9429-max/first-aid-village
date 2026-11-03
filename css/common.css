@@ -120,7 +120,7 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
    배경: 지도에서 그 구역 장소를 확대 (scene.js) + 살짝 어둡게
    위: 미션 안내 바 / 가운데: 문제(물품 카드·O/X 버튼·보기) / 아래: 주민·보건 대원 + 대화창 */
 .scene {
-  position: relative; width: 100%; height: 100vh; overflow: hidden;
+  position: relative; width: 100%; height: 100vh; height: 100dvh; overflow: hidden;   /* dvh: 아이패드 사파리 주소창을 뺀 실제 높이 */
   background-color: var(--grass-dark); background-repeat: no-repeat;
   display: flex; flex-direction: column;
 }
@@ -478,3 +478,27 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 
 /* 말풍선이 가운데 글상자를 가리지 않게 화면 너비에 맞춰 폭 제한 */
 .speech.bubble { max-width: min(230px, 17vw); }
+
+/* 사파리(아이패드)에서 버튼 글씨가 파랗게 나오지 않게 */
+button { color: var(--ink); }
+.item-card, .choice, .zone-card, .nb-card, .switch { color: var(--ink); }
+
+/* 세로가 짧은 태블릿 가로 화면 (아이패드 10세대·갤럭시탭 등 – 브라우저 주소창을 빼면 세로 약 650~760px) */
+@media (max-height: 780px) {
+  body { font-size: 20px; }
+  .mission-bar { min-height: 56px; padding: 5px 14px; }
+  .mission-bar .who img { height: 42px; }
+  .mission-bar .zone { font-size: 20px; }
+  .btn { min-height: 52px; padding: 8px 20px; font-size: 20px; }
+  .btn.small { min-height: 44px; font-size: 16px; }
+  .item-grid { gap: 10px; }
+  .item-card { min-height: 112px; padding: 6px; font-size: 20px; }
+  .item-card img { height: 58px; }
+  .dialog { padding-top: 22px; padding-bottom: 10px; }
+  .dialog .line { font-size: 20px; }
+  .scene-bottom { padding-bottom: 12px; }
+  .ox .btn { height: 112px; width: 140px; }
+  .choice { min-height: 64px; padding: 8px 12px; font-size: 19px; }
+  .board { padding: 12px 14px; }
+  .notebook li { line-height: 38px; font-size: 19px; }
+}
