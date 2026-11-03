@@ -152,6 +152,7 @@ const CPR = {
           <div class="counters"><span id="rCount"></span><span id="rGood"></span></div>
           <div id="rSpeed" class="note"></div>
           <div id="rJudge" class="judge"></div>
+          ${App.sound.metronome ? '' : `<div class="note">🔇 ${esc(P.metronomeOff)}</div>`}
         </div>
       </div>
       <button class="btn press-btn" id="pressBtn">${esc(R.pressButton)}</button></div>`);
@@ -224,20 +225,19 @@ const CPR = {
   startMetronome(bpm, onBeat) {
     this.stopMetronome();
     const ms = 60000 / bpm;
-    let ctx = null;
-    if (App.sound.metronome) {
-      try { ctx = this.audioCtx || (this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()); ctx.resume(); } catch (e) { ctx = null; }
-    }
+    /* 클릭음은 코드로 만든 짧은 소리 파일(sounds/metronome.mp3)을 다른 효과음과 같은 방식으로 재생.
+       (아이패드는 무음 모드일 때 Web Audio 소리를 꺼 버려서 파일 재생 방식으로 바꿈)
+       소리 2개를 번갈아 써서 빠른 박자에서도 끊기지 않게 함 */
+    if (!this.clicks) this.clicks = [0, 1].map(() => { const a = new Audio('assets/sounds/metronome.mp3'); a.preload = 'auto'; a.volume = 0.8; return a; });
+    let k = 0;
     const tick = () => {
       onBeat();
-      if (ctx && App.sound.metronome) {
-        const o = ctx.createOscillator(), g = ctx.createGain();
-        o.frequency.value = 1000; g.gain.setValueAtTime(0.25, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-        o.connect(g).connect(ctx.destination); o.start(); o.stop(ctx.currentTime + 0.06);
+      if (App.sound.metronome) {
+        const a = this.clicks[k++ % 2];
+        try { a.currentTime = 0; a.play().catch(() => {}); } catch (e) {}
       }
     };
-    tick();
+    tick();          // 첫 박자는 버튼을 누른 순간에 바로 (아이패드 소리 허용)
     this.metroTimer = setInterval(tick, ms);
   },
   stopMetronome() {

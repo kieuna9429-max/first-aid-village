@@ -515,6 +515,7 @@ window.CONTENT = {
     countLabel: "전체 압박 {n} / 30",
     goodLabel: "좋아요 {n}회",
     nextHint: "다음으로 ▶",
+    metronomeOff: "메트로놈 소리가 꺼져 있어요. 오른쪽 위 소리 버튼에서 켤 수 있어요.",
     /* ▲ 여기까지 새 문구 */
 
     arrival: { bubble: "구급대가 도착했어! 네가 쉬지 않고 도와준 덕분이야.", title: "구급대 도착", guide: "구급대원에게 맡겼어요.", button: "수첩 보기 ▶" },
