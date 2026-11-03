@@ -106,6 +106,12 @@ function toast(msg) {
   setTimeout(() => t.remove(), 2200);
 }
 
+/** 정답·오답 설명이 화면 밖에 있으면 보이게 스크롤 */
+function revealResult(el) {
+  if (!el) return;
+  requestAnimationFrame(() => el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }));
+}
+
 /** HTML에 넣을 글자 안전하게 */
 function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

@@ -126,7 +126,9 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 }
 .scene-dim { position: absolute; inset: 0; background: rgba(40, 28, 20, .38); pointer-events: none; }
 .scene > *:not(.scene-dim) { position: relative; }
-.scene-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 10px 250px 0; min-height: 0; }
+.scene-main { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 10px 250px 8px; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+/* 내용이 짧으면 가운데, 화면보다 길면 위에서부터 보이고 이 칸 안에서 스크롤 (대화창 뒤로 숨지 않게) */
+.scene-main > * { margin-top: auto; margin-bottom: auto; }
 .scene-bottom { position: relative; padding: 0 24px 20px; }
 /* 주민(왼쪽) · 보건 대원(오른쪽): 대화창 위에 서 있고, 발끝 기준·같은 배율 */
 .actors { position: absolute; left: 24px; right: 24px; bottom: calc(100% - 22px); display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; }
@@ -464,3 +466,7 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 .nb-card img { height: 120px; width: auto; }
 .nb-card.locked { background: var(--paper); border-style: dashed; }
 .nb-q { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 56px; color: var(--sign-dark); }
+
+/* 10구역 3지선다: 보기 칸을 촘촘하게 (설명이 한 화면에 들어오게) */
+.choices.compact { gap: 8px; }
+.choices.compact .choice { min-height: 0; padding: 8px 12px; font-size: 19px; }

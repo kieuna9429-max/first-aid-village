@@ -177,8 +177,10 @@ const Mission = {
         Sound.play('correct');
         main.querySelectorAll('.ox .btn').forEach(x => { x.disabled = x !== b; });
         this.setNpc('care', T.oxRightBubble); this.setPlayer('happy');
-        main.querySelector('#oxResult').innerHTML = `<div class="result ok" style="background:rgba(227,244,220,.96)"><span class="icon">✓</span>
+        const oxr = main.querySelector('#oxResult');
+        oxr.innerHTML = `<div class="result ok" style="background:rgba(227,244,220,.96)"><span class="icon">✓</span>
           <div><b>${esc(fillText(T.oxRightTitle, { answer: sym(r.ox.answer) }))}</b><br>${esc(r.ox.explain)}</div></div>`;
+        revealResult(oxr);
         this.setDialog({ name: T.oxTag, line: r.ox.q, action: { label: T.next, onClick: () => { this.$('mLine').style.fontWeight = ''; this.action(); } } });
       } else {
         Sound.play('wrong');
@@ -210,12 +212,14 @@ const Mission = {
         main.querySelectorAll('.choice').forEach(x => { x.disabled = true; });
         this.setNpc('care', T.actionRightBubble); this.setPlayer('thumb');
         res.innerHTML = `<div class="result ok"><span class="icon">✓</span><div><b>${esc(T.actionRightTitle)}</b><br>${esc(a.fb)}</div></div>`;
+        revealResult(res);
         this.setDialog({ name: this.zone.name, line: fillText(T.actionAsk, { ask: r.ask }), action: { label: T.next, onClick: () => this.afterRound() } });
       } else {
         Sound.play('wrong');
         c.classList.add('wrong');   // 보기는 그대로 남겨 두고 다시 고르기
         this.setNpc('hurt', T.actionWrongBubble); this.setPlayer('worry');
         res.innerHTML = `<div class="result no"><span class="icon">✕</span><div><b>${esc(T.actionWrongTitle)}</b> ${esc(T.actionWrongWhy)}<br>${esc(a.fb)}</div></div>`;
+        revealResult(res);
       }
     }));
   },

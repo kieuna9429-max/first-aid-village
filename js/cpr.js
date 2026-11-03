@@ -76,7 +76,7 @@ const CPR = {
       this.turtle(); this.player('think');
       const main = Mission.setMain(`<div class="board" style="width:100%">
         <p style="margin:0 0 10px;font-weight:700;font-size:22px">${esc(q.q)}</p>
-        <div class="choices" style="grid-template-columns:1fr">${q.options.map((o, i) =>
+        <div class="choices compact" style="grid-template-columns:1fr">${q.options.map((o, i) =>
           `<button class="choice" data-i="${i}"><span class="num">${nums[i]}</span><span>${esc(o.text)}</span></button>`).join('')}</div>
         <div id="qRes" style="margin-top:10px"></div></div>`);
       this.say(q.q);
@@ -87,6 +87,7 @@ const CPR = {
           c.classList.add('wrong');
           this.turtle(P.wrongBubble); this.player('worry');
           res.innerHTML = `<div class="result no"><span class="icon">✕</span><div>${esc(o.fb)}</div></div>`;
+          revealResult(res);
           return;
         }
         Sound.play('correct');
@@ -94,6 +95,7 @@ const CPR = {
         main.querySelectorAll('.choice').forEach(x => { x.disabled = true; });
         const card = q.afterCard ? `<div class="result hint" style="margin-top:8px"><span class="icon">💡</span><div>${q.afterCard.map(esc).join('<br>')}</div></div>` : '';
         res.innerHTML = `<div class="result ok"><span class="icon">✓</span><div><b>정답이에요!</b><br>${esc(o.fb)}</div></div>${card}`;
+        revealResult(res);
         if (k === 1) this.player('call', q.studentLine); else this.player('thumb');
         this.turtle(q.afterBubble);
         this.say(q.afterBubble, { action: { label: T.next, onClick: () => (k < 2 ? this.quiz(k + 1) : this.method()) } });
