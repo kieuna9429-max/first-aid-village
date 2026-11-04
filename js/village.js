@@ -75,7 +75,57 @@ const Village = {
     document.getElementById('quickBtn').addEventListener('click', () => this.quickMove());
     document.getElementById('notebookBtn').addEventListener('click', () => this.notebookList());
     addEventListener('resize', () => this.layout());
+    this.buildJoystick();
+    this.buildMinimap();
     this.built = true;
+  },
+
+  /* 가상 조이스틱: 터치 화면(태블릿·휴대폰)에서만. 동그라미를 끌면 그 방향으로 걸어감 */
+  buildJoystick() {
+    const touch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    if (!touch) return;
+    this.view.classList.add('touch');
+    const base = document.createElement('div');
+    base.className = 'joystick'; base.setAttribute('aria-label', '조이스틱');
+    base.innerHTML = '<div class="knob"></div>';
+    this.view.appendChild(base);
+    const knob = base.querySelector('.knob');
+    let id = null;
+    const move = e => {
+      const r = base.getBoundingClientRect(), R = r.width / 2;
+      let dx = e.clientX - (r.left + R), dy = e.clientY - (r.top + R);
+      const d = Math.hypot(dx, dy), max = R * 0.62;
+      if (d > max) { dx = dx / d * max; dy = dy / d * max; }
+      knob.style.transform = `translate(${dx}px, ${dy}px)`;
+      const k = Math.hypot(dx, dy) / max;
+      this.joy = k < 0.15 ? null : { x: dx / max, y: dy / max };
+    };
+    const end = () => { id = null; this.joy = null; knob.style.transform = ''; };
+    base.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); id = e.pointerId; try { base.setPointerCapture(id); } catch (_) {} move(e); });
+    base.addEventListener('pointermove', e => { if (e.pointerId === id) move(e); });
+    base.addEventListener('pointerup', end); base.addEventListener('pointercancel', end);
+  },
+
+  /* 미니맵: 지도(같은 그림)를 작게 보여 주고 주민(! / ✓ / 잠김)과 보건 대원 위치 표시. 누르면 그곳으로 걸어감 */
+  buildMinimap() {
+    const mm = document.createElement('div');
+    mm.className = 'minimap'; mm.setAttribute('aria-label', '미니맵');
+    mm.innerHTML = '<div class="mm-me"></div>' + CONTENT.zones.map(z =>
+      `<div class="mm-npc" data-id="${z.id}" style="left:${z.x}%;top:${z.y}%"></div>`).join('');
+    this.view.appendChild(mm);
+    this.mm = mm;
+    mm.addEventListener('pointerdown', e => {
+      e.stopPropagation();
+      const r = mm.getBoundingClientRect();
+      this.target = { x: (e.clientX - r.left) / r.width * this.MAP_W, y: Math.min(Math.max((e.clientY - r.top) / r.height * this.MAP_H, 120), this.MAP_H - 10) };
+      Sound.play('click', 0.4);
+    });
+  },
+  drawMinimap() {
+    if (!this.mm) return;
+    const me = this.mm.querySelector('.mm-me');
+    me.style.left = (this.pos.x / this.MAP_W * 100) + '%';
+    me.style.top = (this.pos.y / this.MAP_H * 100) + '%';
   },
 
   /* 화면 크기에 맞춰 지도 배율 정하기 */
@@ -108,6 +158,10 @@ const Village = {
       m.className = 'marker ' + (!selected ? 'lock' : done ? 'done' : 'need');
       m.textContent = !selected ? '잠김' : done ? T.doneMark : '!';
     });
+    if (this.mm) this.mm.querySelectorAll('.mm-npc').forEach(d => {
+      const id = +d.dataset.id;
+      d.className = 'mm-npc ' + (!sel.includes(id) ? 'lock' : App.done.has(id) ? 'done' : 'need');
+    });
     document.getElementById('solvedBox').textContent = fillText(T.solved, { done: sel.filter(id => App.done.has(id)).length, total: sel.length });
   },
 
@@ -130,15 +184,16 @@ const Village = {
     if (K.has('arrowright') || K.has('d')) vx += 1;
     if (K.has('arrowup') || K.has('w')) vy -= 1;
     if (K.has('arrowdown') || K.has('s')) vy += 1;
+    if (!vx && !vy && this.joy) { vx = this.joy.x; vy = this.joy.y; this.target = null; }   // 가상 조이스틱
     if (!vx && !vy && this.target) {
       const dx = this.target.x - this.pos.x, dy = this.target.y - this.pos.y, d = Math.hypot(dx, dy);
       if (d < 8) this.target = null; else { vx = dx / d; vy = dy / d; }
     }
     this.moving = !!(vx || vy);
     if (this.moving) {
-      const len = Math.hypot(vx, vy);
-      this.pos.x = Math.min(Math.max(this.pos.x + vx / len * this.SPEED * dt, 40), this.MAP_W - 40);
-      this.pos.y = Math.min(Math.max(this.pos.y + vy / len * this.SPEED * dt, 120), this.MAP_H - 10);
+      const len = Math.hypot(vx, vy), sp = this.SPEED * Math.min(1, len);   // 조이스틱은 많이 밀수록 빠르게
+      this.pos.x = Math.min(Math.max(this.pos.x + vx / len * sp * dt, 40), this.MAP_W - 40);
+      this.pos.y = Math.min(Math.max(this.pos.y + vy / len * sp * dt, 120), this.MAP_H - 10);
       this.dir = Math.abs(vx) > Math.abs(vy) ? (vx > 0 ? 'right' : 'left') : (vy > 0 ? 'down' : 'up');
       this.walkT += dt;
     }
@@ -161,6 +216,7 @@ const Village = {
     const cx = Math.min(Math.max(this.pos.x * this.s - W / 2, 0), this.MAP_W * this.s - W);
     const cy = Math.min(Math.max(this.pos.y * this.s - H * 0.55, 0), this.MAP_H * this.s - H);
     this.world.style.transform = `translate(${-cx}px, ${-cy}px)`;
+    this.drawMinimap();
   },
 
   checkNear() {

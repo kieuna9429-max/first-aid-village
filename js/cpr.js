@@ -116,7 +116,7 @@ const CPR = {
     this.turtle(); this.player('explain');
     const hi = `<div class="zone-hi" style="left:${a.x1}%;top:${a.y1}%;width:${a.x2 - a.x1}%;height:${a.y2 - a.y1}%"></div>
       <div class="hand-dot" style="left:${m.handPoint.x}%;top:${m.handPoint.y}%"></div>`;
-    Mission.setMain(`<div style="display:flex;gap:18px;align-items:center;width:100%;justify-content:center">
+    Mission.setMain(`<div class="cpr-row" style="display:flex;gap:18px;align-items:center;width:100%;justify-content:center">
       ${this.figure('assets/cpr/cpr_torso.webp', 'min(470px, 58vh)', hi)}
       <div class="board" style="flex:1;max-width:420px"><dl class="method-list">${m.rows.map(r =>
         `<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join('')}</dl></div></div>`);
@@ -278,7 +278,7 @@ const CPR = {
     const A = this.P.aed, Z = A.padZones;
     this.chip(5);
     this.turtle(); this.player('think');
-    const main = Mission.setMain(`<div style="display:flex;gap:16px;align-items:center;width:100%;justify-content:center">
+    const main = Mission.setMain(`<div class="cpr-row" style="display:flex;gap:16px;align-items:center;width:100%;justify-content:center">
       ${this.figure('assets/cpr/cpr_torso.webp', 'min(470px, 58vh)', '<div class="zone-flash" id="flashA"></div><div class="zone-flash" id="flashB"></div>')}
       <div class="pad-tray board">
         <button class="pad" data-z="A"><img class="pixel" src="assets/cpr/${Z.A.pad}.webp" alt="패드 1"></button>
@@ -399,7 +399,7 @@ const CPR = {
       Sound.play('aed', 0.6);
       this.turtle(a.afterBubble); this.hidePlayer();
       // 충격 직후 바로 가슴 압박 장면 (깨어나는 연출 없음)
-      Mission.setMain(`<div style="display:flex;gap:18px;align-items:center">${this.pressScene(Math.min(300, innerHeight * 0.37))}
+      Mission.setMain(`<div class="cpr-row" style="display:flex;gap:18px;align-items:center">${this.pressScene(Math.min(300, innerHeight * 0.37))}
         <div class="board" style="max-width:460px"><div class="result ok"><span class="icon">✓</span><div>${esc(a.afterGuide)}</div></div></div></div>`);
       this.say(a.afterBubble, { action: { label: a.nextButton, onClick: () => this.analyze('B') } });
     };
@@ -439,7 +439,7 @@ const CPR = {
     const V = this.P.arrival;
     this.chip(null);
     this.turtle(V.bubble); this.hidePlayer();
-    Mission.setMain(`<div style="display:flex;gap:18px;align-items:center">${this.pressScene(Math.min(300, innerHeight * 0.37))}
+    Mission.setMain(`<div class="cpr-row" style="display:flex;gap:18px;align-items:center">${this.pressScene(Math.min(300, innerHeight * 0.37))}
       <div class="board complete-box"><p class="big-title">${esc(V.title)}</p><div>${esc(V.guide)}</div></div></div>`);
     this.say(V.bubble, { action: { label: V.button, onClick: () => this.notebook() } });
   },
@@ -447,7 +447,7 @@ const CPR = {
     const C = CONTENT, T = C.text, P = this.P, a = P.method.area, nums = ['①', '②', '③', '④'];
     this.zone = this.zone || C.zones.find(z => z.id === 10);   // 마을에서 수첩만 열 때도 쓰도록
     const hi = `<div class="zone-hi" style="left:${a.x1}%;top:${a.y1}%;width:${a.x2 - a.x1}%;height:${a.y2 - a.y1}%"></div>`;
-    return `<div class="notebook" style="display:flex;gap:16px;align-items:flex-start">
+    return `<div class="notebook cpr-row" style="display:flex;gap:16px;align-items:flex-start">
       ${this.figure('assets/cpr/cpr_torso.webp', '230px', hi)}
       <div style="flex:1"><h2 style="margin:0">${esc(T.notebookTitle)} <span class="note">· 10구역 ${esc(this.zone.topic)}</span></h2>
       <div class="sub">${esc(T.notebookHead)}</div>

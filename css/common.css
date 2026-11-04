@@ -502,3 +502,118 @@ button { color: var(--ink); }
   .board { padding: 12px 14px; }
   .notebook li { line-height: 38px; font-size: 19px; }
 }
+
+/* =====================================================================
+   스마트폰 세로 화면 (성과공유회용) – 그림·색·글꼴은 그대로, 배치만 세로로
+   ===================================================================== */
+@media (max-width: 600px) and (orientation: portrait) {
+  body { font-size: 17px; }
+  /* 위쪽 안내 바: 한 줄 */
+  .mission-bar { flex-wrap: nowrap; gap: 6px; padding: 6px 8px; min-height: 0; }
+  .mission-bar .who { gap: 6px; min-width: 0; flex: 1; }
+  .mission-bar .who img { height: 30px; }
+  .mission-bar .zone { font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mission-bar .todo { display: none; }
+  .step-chip { font-size: 13px; padding: 2px 8px; white-space: nowrap; }
+  .top-tools { gap: 4px; flex: none; }
+  .top-tools .btn.small { min-height: 38px; min-width: 0; padding: 2px 8px; font-size: 13px; }
+
+  /* 가운데 문제 칸 */
+  .scene-main { padding: 8px 10px 4px; align-items: flex-start; }
+  .board { padding: 10px; }
+  .item-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .item-card { min-height: 92px; font-size: 16px; padding: 6px 4px; }
+  .item-card img { height: 46px; }
+  .choices { grid-template-columns: 1fr; gap: 8px; }
+  .choice { min-height: 0; font-size: 16px; padding: 8px 10px; }
+  .ox { gap: 16px; }
+  .ox .btn { width: 120px; height: 104px; font-size: 52px; }
+  .ox .btn.x { font-size: 78px; }
+  .result { padding: 8px 10px; font-size: 16px; }
+  .answer-row img { height: 40px; width: 52px; }
+
+  /* 아래: 주민·보건 대원은 대화창 바로 위에 작게 한 줄로 (글상자를 가리지 않게) */
+  .scene-bottom { display: flex; flex-direction: column; padding: 0 8px 8px; }
+  .actors { position: static; display: flex; justify-content: space-between; align-items: flex-end; height: 84px; margin: 0 6px -6px; }
+  .actor, .actor.right { transform: none; }
+  .actor img { height: auto !important; max-height: 84px; width: auto; }
+  .speech { display: none; }
+  .dialog { padding-top: 20px; padding-bottom: 8px; }
+  .dialog .nametag { font-size: 15px; top: -12px; }
+  .dialog .line { font-size: 17px; line-height: 1.5; }
+  .dialog .row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .dialog .buttons .btn, .dialog #mAction .btn { width: 100%; }
+  .btn { min-height: 48px; font-size: 18px; padding: 8px 14px; }
+  .note, .helpline { font-size: 14px; }
+
+  /* 수첩·미션 완료 */
+  .notebook { padding: 10px 12px; border-left-width: 8px; }
+  .notebook li { line-height: 1.6; font-size: 16px; margin-bottom: 4px; }
+  .complete-box .badge { height: min(200px, 26vh); }
+  .big-title { font-size: 24px; }
+
+  /* 10구역: 옆으로 놓던 것을 위아래로, 그림은 화면에 맞게 */
+  .cpr-row { flex-direction: column !important; gap: 10px !important; width: 100%; }
+  .notebook.cpr-row { align-items: center !important; }
+  .cpr-figure { height: auto !important; max-width: 100%; }
+  .cpr-figure > img:first-child { height: auto; max-height: 30vh; max-width: 100%; }
+  .press-scene > img { max-height: 24vh !important; }
+  .rg-row { flex-direction: column; gap: 6px; }
+  .rhythm-body { flex-direction: column; gap: 8px; }
+  .rhythm-panel { min-width: 0; width: 100%; }
+  .counters { font-size: 19px; }
+  .judge { font-size: 18px; }
+  .press-btn { width: 100%; font-size: 26px; padding: 14px; }
+  .method-list { font-size: 15px; }
+  .pad-tray { flex-direction: row; justify-content: center; }
+  .pad img { height: min(96px, 13vh); }
+  .aed-voice { font-size: 15px; }
+
+  /* 마을 위쪽 버튼 */
+  .hud.top-right { gap: 4px; }
+  .hud.top-right .btn.small { min-height: 40px; font-size: 13px; padding: 2px 8px; }
+  .hud .panel { padding: 4px 8px; font-size: 14px; }
+  .popup.wide { width: 94vw; }
+  .nb-grid { grid-template-columns: repeat(2, 1fr); }
+  .nb-card img, .nb-q { height: 90px; }
+}
+
+/* 휴대폰을 가로로 돌렸을 때: 세로로 돌려 달라는 안내 */
+.rotate-hint { display: none; }
+@media (orientation: landscape) and (max-height: 480px) {
+  .rotate-hint { display: flex; position: fixed; inset: 0; z-index: 200; background: var(--paper); flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-family: var(--font-title); font-weight: 700; font-size: 22px; color: var(--ink); text-align: center; }
+  .rotate-hint .big { font-size: 48px; }
+}
+
+/* 가상 조이스틱 (터치 화면) */
+.joystick { position: absolute; z-index: 6; left: 18px; bottom: 18px; width: 128px; height: 128px; border-radius: 50%;
+  background: rgba(255, 243, 220, .55); border: 4px solid rgba(90, 59, 38, .7); touch-action: none; }
+.joystick .knob { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%;
+  background: var(--gold); border: 4px solid var(--wood-dark); box-shadow: 0 3px 0 var(--gold-dark); pointer-events: none; }
+.village.touch .hud.bottom-left { display: none; }
+/* 미니맵 (지도 그림 그대로 작게) */
+.minimap { position: absolute; z-index: 6; left: 14px; top: 64px; width: 200px; aspect-ratio: 2752 / 1536;
+  background: url(../assets/map/map.webp) 0 0 / 100% 100%; border: 3px solid var(--wood-dark); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; }
+.mm-npc, .mm-me { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; }
+.mm-npc { width: 10px; height: 10px; border: 2px solid #fff; }
+.mm-npc.need { background: var(--gold); box-shadow: 0 0 0 2px var(--wood-dark); }
+.mm-npc.done { background: var(--ok); }
+.mm-npc.lock { background: #9a8f86; width: 7px; height: 7px; }
+.mm-me { width: 12px; height: 12px; background: var(--no); border: 2px solid #fff; box-shadow: 0 0 0 2px var(--no); animation: blink 1s steps(2) infinite; }
+
+@media (max-width: 600px) and (orientation: portrait) {
+  .mission-bar:has(.step-chip:not([hidden])) .zone { display: none; }   /* 단계 표시가 있을 때는 이름 대신 그림만 */
+  .hud.top-left { top: 56px; }
+  .minimap { top: 96px; width: 130px; }
+  .hud.bottom { bottom: 158px; }
+  .hud.bottom .btn { font-size: 20px; padding: 10px 20px; }
+  .joystick { width: 118px; height: 118px; }
+  .rhythm-top { font-size: 13px; padding: 2px 8px; }
+  .beat { width: 40px; height: 40px; }
+  .press-scene > img { max-height: 18vh !important; }
+  .rhythm { gap: 6px; }
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  /* 리듬 연습 중에는 [누르기!] 버튼이 꼭 보이게 아래 캐릭터 줄을 숨김 */
+  #mission:has(.rhythm) .actors, #mission:has(.rhythm-guide) .actors { display: none; }
+}
