@@ -617,3 +617,17 @@ button { color: var(--ink); }
   /* 리듬 연습 중에는 [누르기!] 버튼이 꼭 보이게 아래 캐릭터 줄을 숨김 */
   #mission:has(.rhythm) .actors, #mission:has(.rhythm-guide) .actors { display: none; }
 }
+/* 교사용 화면 – 휴대폰 */
+@media (max-width: 600px) {
+  .teacher-page { padding: 14px 10px 30px; }
+  .teacher-panel { padding: 16px 14px 18px; }
+  .qr-layout { gap: 16px; }
+  .qr-box { max-width: 100%; box-sizing: border-box; margin: 0 auto; }
+  .qr-box canvas { width: 100%; height: auto; max-width: 100%; }
+  .qr-layout > * { min-width: 0; max-width: 100%; }
+  .overlay canvas, .qr-full canvas { max-width: 86vw; height: auto; }
+  .qr-full .big-text { text-align: center; padding: 0 16px; font-size: 26px; }
+  .overlay { text-align: center; padding: 12px; }
+  .zone-card .pic { height: 84px; }
+  .zone-card .zname { font-size: 17px; }
+}
