@@ -631,3 +631,14 @@ button { color: var(--ink); }
   .zone-card .pic { height: 84px; }
   .zone-card .zname { font-size: 17px; }
 }
+/* 교사용 화면 – 휴대폰 아래 [링크·QR 만들기] 띠 (PC·태블릿에서는 숨김) */
+.sticky-make { display: none; }
+@media (max-width: 600px) {
+  .sticky-make { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: var(--paper); color: var(--ink);
+    border-top: var(--line) solid var(--wood); box-shadow: 0 -4px 0 rgba(0,0,0,.15); }
+  .sticky-make .sum { flex: 1; font-family: var(--font-small); font-size: 15px; line-height: 1.35; }
+  .sticky-make .sum b { font-family: var(--font-title); font-size: 17px; }
+  .sticky-make .btn { white-space: nowrap; }
+  .teacher-page:has(#setupView:not([hidden])) { padding-bottom: 96px; }
+}

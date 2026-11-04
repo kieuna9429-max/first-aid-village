@@ -30,6 +30,8 @@
   $('previewBtn').textContent = T.studentPreview;
   $('previewNote').textContent = T.studentPreviewNote;
   $('makeBtn').textContent = T.makeButton;
+  $('stickyMake').textContent = T.makeButton;
+  $('stickyMake').addEventListener('click', () => $('makeBtn').click());
   $('creditsBtn').textContent = $('creditsBtn2').textContent = T.creditsButton;
   $('qrTitle').textContent = T.qrTitle;
   $('qrGuide').textContent = T.qrGuide;
@@ -86,6 +88,10 @@
     const min = picked.reduce((s, z) => s + z.time[0], 0);
     const max = picked.reduce((s, z) => s + z.time[1], 0);
     $('summary').textContent = fillText(T.summary, { n: picked.length, min, max });
+    // 휴대폰 아래 띠
+    $('stickySum').innerHTML = picked.length
+      ? `<b>${esc(fillText(T.stickyPicked, { n: picked.length }))}</b><br>${esc(fillText(T.stickyTime, { min, max }))}`
+      : `<b>${esc(T.stickyNone)}</b>`;
   }
   render();
 
