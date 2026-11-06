@@ -24,7 +24,7 @@ const Worksheet = {
     const lines = b.lines.map(l => esc(l.replace(/\[\[|\]\]/g, '')));
     b.words.forEach(w => {
       const word = esc(w), i = lines.findIndex(l => l.includes(word));
-      if (i >= 0) lines[i] = lines[i].replace(word, answer ? `<span class="ws-answer">${word}</span>` : `<span class="ws-blank" style="min-width:${Math.max(3, w.length * 1.3)}em"></span>`);
+      if (i >= 0) lines[i] = lines[i].replace(word, answer ? `<span class="ws-answer" style="color:#C62828;font-weight:700;text-decoration:underline;text-underline-offset:3px">${word}</span>` : `<span class="ws-blank" style="min-width:${Math.max(3, w.length * 1.3)}em"></span>`);
     });
     return lines;
   },
