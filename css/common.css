@@ -710,3 +710,10 @@ button { color: var(--ink); }
 @media (max-width: 600px) and (orientation: portrait) {
   .minimap:not(.big) { width: 150px; }
 }
+
+/* 배지 상자: 배지 수에 맞춰 폭이 줄어듦 (칸 크기 --slot) */
+.badge-slots { width: auto !important; --slot: 34px; }
+.minimap:not(.big) { left: 14px; }
+@media (max-width: 600px) and (orientation: portrait) {
+  .badge-slots { --slot: 27px; }
+}

@@ -170,21 +170,31 @@ const Village = {
       const z = CONTENT.zones.find(x => x.id === id), done = App.done.has(id);
       return `<button class="badge-slot${done ? ' done' : ''}" data-id="${id}" aria-label="${id}구역 ${esc(z.topic)} 배지 ${done ? '받음' : '아직 못 받음'}"><img src="assets/badges/${z.badge}.webp" alt=""></button>`;
     }).join('');
+    box.style.gridTemplateColumns = `repeat(${Math.min(Math.max(sel.length, 1), 5)}, var(--slot))`;   // 배지 수에 맞춘 폭 (한 줄 최대 5개)
     box.querySelectorAll('.badge-slot').forEach(b => b.addEventListener('click', () => {
       if (!b.classList.contains('done')) return toast(T.notebookLocked);
       this.openNotebook(CONTENT.zones.find(x => x.id === +b.dataset.id));
     }));
     this.stackHud();
   },
-  /* 왼쪽 위: 모은 배지 칸, 그 아래 한 줄에 미니맵(왼쪽)과 배지 상자(바로 오른쪽) */
+  /* 왼쪽 위: 미니맵(왼쪽) · 그 오른쪽에 모은 배지 칸, 바로 아래 배지 상자 */
   stackHud() {
-    const v = document.getElementById('village'), cnt = document.getElementById('badgeCount'), box = document.getElementById('badgeSlots');
+    const v = document.getElementById('village'), hud = document.querySelector('#village .hud.top-left'),
+      cnt = document.getElementById('badgeCount'), box = document.getElementById('badgeSlots');
     if (!v || v.hidden || !cnt.offsetHeight) return;
-    const top = el => el.getBoundingClientRect().top - v.getBoundingClientRect().top;
-    const rowTop = top(cnt) + cnt.offsetHeight + 6;      // 모은 배지 칸 바로 아래 한 줄: 왼쪽 미니맵, 그 오른쪽 배지 상자
-    box.style.top = rowTop + 'px';
-    if (this.mm && !this.mm.classList.contains('big')) { this.mm.style.top = rowTop + 'px'; box.style.left = (this.mm.offsetLeft + this.mm.getBoundingClientRect().width + 6) + 'px'; }
+    const vr = v.getBoundingClientRect();
+    hud.style.left = '';                                      // CSS 기본 위치(왼쪽 위)를 기준으로
+    const base = hud.getBoundingClientRect(), x0 = base.left - vr.left, y0 = base.top - vr.top;
+    let right = x0;
+    if (this.mm) {
+      if (!this.mm.classList.contains('big')) { this.mm.style.left = x0 + 'px'; this.mm.style.top = y0 + 'px'; }
+      right = x0 + this.mm.offsetWidth + 8;
+    }
+    hud.style.left = right + 'px';
+    box.style.left = right + 'px';
+    box.style.top = (y0 + cnt.offsetHeight + 6) + 'px';
   },
+
   openNotebook(z, back) {
     const T = CONTENT.text;
     Sound.play('click');
