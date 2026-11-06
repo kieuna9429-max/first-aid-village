@@ -1,7 +1,7 @@
 /* =====================================================================
    활동지 인쇄 (worksheet.js) – 교사용 화면
    오늘 고른 구역의 수첩 내용으로 A4 활동지를 만듦
-   핵심 빈칸형: content.js의 worksheetBlanks 낱말을 빈칸으로 / 수첩 전체형: 문장마다 점검 칸
+   핵심 빈칸형: content.js의 worksheetBlanks 낱말을 빈칸으로 / 빈칸형 정답지: 같은 낱말을 빨간 글씨로 / 수첩 전체형: 문장마다 점검 칸
    [인쇄하기]는 브라우저 인쇄 창, [PDF로 저장]은 그림으로 바꿔 PDF 파일을 바로 내려받음
    ===================================================================== */
 const Worksheet = {
@@ -19,28 +19,28 @@ const Worksheet = {
     return out;
   },
 
-  /* 낱말을 차례대로 찾아 빈칸으로 (같은 낱말은 첫 번째만) */
-  blankLines(b) {
+  /* 낱말을 차례대로 찾아 빈칸으로, 정답지는 빨간 낱말로 (같은 낱말은 첫 번째만) */
+  blankLines(b, answer) {
     const lines = b.lines.map(l => esc(l.replace(/\[\[|\]\]/g, '')));
     b.words.forEach(w => {
       const word = esc(w), i = lines.findIndex(l => l.includes(word));
-      if (i >= 0) lines[i] = lines[i].replace(word, `<span class="ws-blank" style="min-width:${Math.max(3, w.length * 1.3)}em"></span>`);
+      if (i >= 0) lines[i] = lines[i].replace(word, answer ? `<span class="ws-answer">${word}</span>` : `<span class="ws-blank" style="min-width:${Math.max(3, w.length * 1.3)}em"></span>`);
     });
     return lines;
   },
 
   blockHTML(b, kind) {
     const nums = ['①', '②', '③', '④', '⑤'];
-    const rows = kind === 'blank'
-      ? this.blankLines(b).map((l, i) => `<li>${nums[i]} ${l}</li>`)
+    const rows = kind !== 'full'
+      ? this.blankLines(b, kind === 'answer').map((l, i) => `<li>${nums[i]} ${l}</li>`)
       : b.lines.map(l => `<li><span class="ws-check"></span>${notebookLine(l)}</li>`);
     return `<section class="ws-block"><h3>${esc(b.title)}${b.sub ? ` <small>· ${esc(b.sub)}</small>` : ''}</h3><ol>${rows.join('')}</ol></section>`;
   },
 
-  pageHTML(blocks) {
-    const T = CONTENT.teacher;
+  pageHTML(blocks, kind) {
+    const T = CONTENT.teacher, answer = kind === 'answer';
     return `<article class="ws-page">
-      <header><h1>${esc(T.sheetPaperTitle)}</h1><p>____학년 ____반 ____번 이름: ______________</p></header>
+      <header><h1>${esc(answer ? T.sheetAnswerTitle : T.sheetPaperTitle)}</h1>${answer ? '' : '<p>____학년 ____반 ____번 이름: ______________</p>'}</header>
       <div class="ws-body">${blocks.join('')}</div>
       <footer>${esc(T.sheetPaperFoot)}</footer></article>`;
   },
@@ -48,7 +48,7 @@ const Worksheet = {
   /* 묶음 높이를 재서 A4 장수로 나눔 */
   render(host, zoneIds, kind) {
     const html = this.blocks(zoneIds).map(b => this.blockHTML(b, kind));
-    host.innerHTML = this.pageHTML(html);
+    host.innerHTML = this.pageHTML(html, kind);
     const heights = [...host.querySelectorAll('.ws-block')].map(el => {
       const s = getComputedStyle(el);
       return el.offsetHeight + parseFloat(s.marginBottom);
@@ -58,7 +58,7 @@ const Worksheet = {
       if (used + heights[i] > this.PAGE_BODY && pages[pages.length - 1].length) { pages.push([]); used = 0; }
       pages[pages.length - 1].push(h); used += heights[i];
     });
-    host.innerHTML = pages.map(p => this.pageHTML(p)).join('');
+    host.innerHTML = pages.map(p => this.pageHTML(p, kind)).join('');
   },
 
   /* 인쇄: 활동지만 담은 새 창을 열고 글꼴을 불러온 뒤 인쇄 창을 띄움 */
@@ -122,7 +122,7 @@ const Worksheet = {
       showPopup({ title: T.noZoneTitle, body: `<p style="text-align:center">${esc(T.noZoneNote)}</p>` });
       return;
     }
-    const kinds = [['blank', T.sheetBlank, T.sheetBlankNote], ['full', T.sheetFull, T.sheetFullNote]];
+    const kinds = [['blank', T.sheetBlank, T.sheetBlankNote], ['answer', T.sheetAnswer, T.sheetAnswerNote], ['full', T.sheetFull, T.sheetFullNote]];
     const { overlay } = showPopup({
       title: T.sheetTitle, wide: true,
       body: `<p class="note" style="text-align:center;margin-top:0">${esc(fillText(T.sheetIntro, { n: zoneIds.size }))}</p>
@@ -143,7 +143,7 @@ const Worksheet = {
     const pdfBtn = overlay.querySelector('#wsPdf');
     pdfBtn.addEventListener('click', async () => {
       pdfBtn.disabled = true; pdfBtn.textContent = T.sheetPdfWorking;
-      try { await this.savePDF(host, kind === 'blank' ? '핵심빈칸형' : '수첩전체형'); }
+      try { await this.savePDF(host, { blank: '핵심빈칸형', answer: '빈칸형정답지', full: '수첩전체형' }[kind]); }
       catch (e) { toast(T.sheetPdfFail); }
       pdfBtn.disabled = false; pdfBtn.textContent = T.sheetPdf;
     });
