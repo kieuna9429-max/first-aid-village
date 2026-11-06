@@ -176,13 +176,14 @@ const Village = {
     }));
     this.stackHud();
   },
-  /* 왼쪽 위 차례: 모은 배지 칸 → 배지 상자 → 미니맵 (칸 높이에 맞춰 바로 아래에) */
+  /* 왼쪽 위: 모은 배지 칸, 그 아래 한 줄에 미니맵(왼쪽)과 배지 상자(바로 오른쪽) */
   stackHud() {
     const v = document.getElementById('village'), cnt = document.getElementById('badgeCount'), box = document.getElementById('badgeSlots');
     if (!v || v.hidden || !cnt.offsetHeight) return;
     const top = el => el.getBoundingClientRect().top - v.getBoundingClientRect().top;
-    box.style.top = (top(cnt) + cnt.offsetHeight + 6) + 'px';
-    if (this.mm) this.mm.style.top = (top(box) + box.offsetHeight + 6) + 'px';
+    const rowTop = top(cnt) + cnt.offsetHeight + 6;      // 모은 배지 칸 바로 아래 한 줄: 왼쪽 미니맵, 그 오른쪽 배지 상자
+    box.style.top = rowTop + 'px';
+    if (this.mm && !this.mm.classList.contains('big')) { this.mm.style.top = rowTop + 'px'; box.style.left = (this.mm.offsetLeft + this.mm.getBoundingClientRect().width + 6) + 'px'; }
   },
   openNotebook(z, back) {
     const T = CONTENT.text;
