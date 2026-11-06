@@ -30,6 +30,8 @@
   $('previewBtn').textContent = T.studentPreview;
   $('previewNote').textContent = T.studentPreviewNote;
   $('makeBtn').textContent = T.makeButton;
+  $('sheetBtn').textContent = T.sheetButton;
+  $('sheetBtn').addEventListener('click', () => Worksheet.open(state.zones));
   $('stickyMake').textContent = T.makeButton;
   $('stickyMake').addEventListener('click', () => $('makeBtn').click());
   $('creditsBtn').textContent = $('creditsBtn2').textContent = T.creditsButton;
@@ -229,6 +231,7 @@
       <ol style="font-size:16px;padding-left:24px;margin:0">${cr.sounds.map(s => `<li>${esc(s)}</li>`).join('')}</ol>
       <p><b>글꼴</b><br><span style="font-size:16px">갈무리(Galmuri) © Lee Minseo (Quiple) – SIL Open Font License 1.1<br>프리텐다드(Pretendard) © Kil Hyung-jin – SIL Open Font License 1.1</span></p>
       <p><b>QR 코드</b><br><span style="font-size:16px">QRCode for JavaScript © Kazuhiko Arase – MIT License. "QR Code"는 DENSO WAVE의 등록 상표예요.</span></p>
+      <p><b>활동지 PDF</b><br><span style="font-size:16px">html2canvas © Niklas von Hertzen · jsPDF © James Hall, yWorks GmbH – MIT License</span></p>
       <p style="text-align:center"><b>${esc(cr.notice)}</b></p>`;
     showPopup({ title: T.creditsButton, body, wide: true });
   }

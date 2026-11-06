@@ -336,7 +336,11 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 .player-sprite { position: absolute; width: 112px; height: 150px; transform: translate(-50%, -100%); background: url(../assets/player/player_walk.png?v=20261106) 0 0 / 448px 600px no-repeat; image-rendering: pixelated; pointer-events: none; }
 
 .hud { position: absolute; z-index: 5; }
-.hud.top-left { left: 14px; top: 14px; }
+.hud.top-left { left: 14px; top: 14px; display: flex; gap: 8px; }
+.badge-slots { position: absolute; z-index: 5; left: 14px; top: 188px; width: 200px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; padding: 5px; background: rgba(255, 243, 220, .92); border: 3px solid var(--wood); border-radius: 8px; }
+.badge-slot { aspect-ratio: 1; padding: 0; border: 0; background: none; cursor: pointer; }
+.badge-slot img { width: 100%; height: 100%; object-fit: contain; display: block; filter: grayscale(1); opacity: .55; }
+.badge-slot.done img { filter: none; opacity: 1; }
 .hud.top-right { right: 14px; top: 14px; display: flex; gap: 8px; }
 .hud.bottom { left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; pointer-events: none; }
 .hud.bottom .btn { pointer-events: auto; font-size: 26px; padding: 14px 34px; }
@@ -617,6 +621,7 @@ button { color: var(--ink); }
   .mission-bar:has(.step-chip:not([hidden])) .zone { display: none; }   /* 단계 표시가 있을 때는 이름 대신 그림만 */
   .hud.top-left { top: 76px; }
   .minimap { top: 116px; width: 130px; }
+  .badge-slots { top: 196px; width: 150px; }
   .minimap.big { width: 90vw; }
   .hud.bottom { bottom: 158px; }
   .hud.bottom .btn { font-size: 20px; padding: 10px 20px; }
@@ -676,3 +681,35 @@ button { color: var(--ink); }
   .title-art .title-actors { height: 150px !important; }
   .title-art .title-actors .actor img { max-height: 150px !important; }
 }
+
+/* 활동지: 화면 미리보기와 인쇄 (A4 794×1123px) */
+.ws-kinds { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+.ws-kinds .switch { flex-direction: column; gap: 0; align-items: flex-start; text-align: left; }
+.ws-preview { max-height: 40vh; overflow: auto; background: #d8ccc0; padding: 10px; border-radius: 8px; }
+.ws-preview .ws-page { margin: 0 auto 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, .25); }
+.ws-actions { display: flex; gap: 10px; justify-content: center; }
+.ws-page { width: 794px; height: 1123px; padding: 44px 52px 36px; background: #fff; color: #222; display: flex; flex-direction: column; font-family: "Pretendard Variable", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; box-sizing: border-box; word-break: keep-all; }
+.ws-page header { border-bottom: 3px solid #333; padding-bottom: 8px; margin-bottom: 18px; flex: none; }
+.ws-page h1 { font-family: inherit; font-size: 26px; margin: 0 0 6px; text-align: center; }
+.ws-page header p { margin: 0; text-align: right; font-size: 17px; }
+.ws-body { flex: 1; min-height: 0; }
+.ws-block { margin-bottom: 18px; }
+.ws-block h3 { font-family: inherit; font-size: 19px; margin: 0 0 6px; background: #f0ece6; padding: 3px 10px; border-radius: 6px; }
+.ws-block h3 small { font-weight: 500; font-size: 15px; }
+.ws-block ol { list-style: none; margin: 0; padding: 0 4px; }
+.ws-block li { font-size: 17px; line-height: 2.1; }
+.ws-blank { display: inline-block; border-bottom: 1.5px solid #333; height: 1.2em; vertical-align: -3px; margin: 0 3px; }
+.ws-check { display: inline-block; width: 15px; height: 15px; border: 1.5px solid #333; border-radius: 3px; margin-right: 8px; vertical-align: -2px; }
+.ws-page .danger { color: #C62828; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.ws-page footer { flex: none; text-align: center; font-weight: 700; font-size: 16px; border-top: 2px solid #333; padding-top: 8px; }
+#printRoot { display: none; }
+@media print {
+  @page { size: A4; margin: 0; }
+  html, body { height: auto !important; min-height: 0 !important; margin: 0; padding: 0 !important; background: #fff !important; }
+  body > *:not(#printRoot) { display: none !important; }
+  #printRoot { display: block; }
+  #printRoot .ws-page { break-after: page; box-shadow: none; height: 296mm; overflow: hidden; }
+  #printRoot .ws-page:last-child { break-after: auto; }
+  .ws-page, .ws-page * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+@media (max-width: 840px) { .ws-preview .ws-page { zoom: .5; } }

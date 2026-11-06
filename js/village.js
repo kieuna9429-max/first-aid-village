@@ -154,7 +154,33 @@ const Village = {
       const id = +d.dataset.id;
       d.className = 'mm-npc ' + (!sel.includes(id) ? 'lock' : App.done.has(id) ? 'done' : 'need');
     });
-    document.getElementById('solvedBox').textContent = fillText(T.solved, { done: sel.filter(id => App.done.has(id)).length, total: sel.length });
+    const got = sel.filter(id => App.done.has(id));
+    document.getElementById('solvedBox').textContent = fillText(T.solved, { done: got.length, total: sel.length });
+    document.getElementById('badgeCount').textContent = fillText(T.badgeCount, { done: got.length, total: sel.length });
+    this.drawBadges(sel);
+    if (this.seenBadges !== undefined && got.length > this.seenBadges) toast(T.newBadge);
+    this.seenBadges = got.length;
+  },
+
+  /* 배지 칸: 받은 배지는 색깔, 못 받은 배지는 회색. 받은 배지를 누르면 그 구역 수첩이 열림 */
+  drawBadges(sel) {
+    const box = document.getElementById('badgeSlots'), T = CONTENT.text;
+    box.innerHTML = sel.map(id => {
+      const z = CONTENT.zones.find(x => x.id === id), done = App.done.has(id);
+      return `<button class="badge-slot${done ? ' done' : ''}" data-id="${id}" aria-label="${id}구역 ${esc(z.topic)} 배지 ${done ? '받음' : '아직 못 받음'}"><img src="assets/badges/${z.badge}.webp" alt=""></button>`;
+    }).join('');
+    box.querySelectorAll('.badge-slot').forEach(b => b.addEventListener('click', () => {
+      if (!b.classList.contains('done')) return toast(T.notebookLocked);
+      this.openNotebook(CONTENT.zones.find(x => x.id === +b.dataset.id));
+    }));
+  },
+  openNotebook(z, back) {
+    const T = CONTENT.text;
+    Sound.play('click');
+    const html = z.id === 10 ? CPR.notebookHTML() : Mission.notebookHTML(z);
+    const buttons = [{ label: T.close, primary: true }];
+    if (back) buttons.unshift({ label: T.notebookBack, onClick: back });
+    showPopup({ body: html, wide: true, buttons });
   },
 
   /* ---------- 움직이기 ---------- */
@@ -267,9 +293,7 @@ const Village = {
     });
     overlay.querySelectorAll('.nb-card.done').forEach(b => b.addEventListener('click', () => {
       close();
-      const z = CONTENT.zones.find(x => x.id === +b.dataset.id);
-      const html = z.id === 10 ? CPR.notebookHTML() : Mission.notebookHTML(z);
-      showPopup({ body: html, wide: true, buttons: [{ label: T.notebookBack, onClick: () => this.notebookList() }, { label: T.close, primary: true }] });
+      this.openNotebook(CONTENT.zones.find(x => x.id === +b.dataset.id), () => this.notebookList());
     }));
   },
 
