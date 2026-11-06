@@ -16,9 +16,7 @@ const App = {
     document.getElementById('welcome').textContent = T.welcome;
     const go = document.getElementById('goBtn');
     go.textContent = T.startButton;
-    const start = document.getElementById('start');
-    setPlaceBackground(start, C.zones.find(z => z.id === 10), 1.6);
-    sizeActors(start, 0.8);
+    // 시작 화면 배경은 팀 첫화면 그림(assets/title) – css/common.css의 .title-art
 
     this.settings = readStudentLink();
     if (!this.settings) {

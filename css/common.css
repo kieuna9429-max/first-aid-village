@@ -652,3 +652,16 @@ button { color: var(--ink); }
   .sticky-make .btn { white-space: nowrap; }
   .teacher-page:has(#setupView:not([hidden])) { padding-bottom: 96px; }
 }
+
+/* 학생 시작 화면 – 팀 첫화면 그림 (제목·캐릭터가 그림 안에 있어서 글 제목·캐릭터는 숨김) */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.title-art { background: #6aa456 url(../assets/title/title_screen_small.webp) center 30% / cover no-repeat; }
+@media (min-width: 1400px), (min-resolution: 2dppx) and (min-width: 900px) {
+  .title-art { background-image: url(../assets/title/title_screen.webp); }
+}
+.title-art .scene-bottom { padding-top: 0; }
+.title-art .dialog { max-width: 920px; margin: 0 auto; }
+/* 휴대폰 세로: 그림 전체가 보이게 위쪽에 맞추고, 아래는 잔디색 */
+@media (orientation: portrait) {
+  .title-art { background-size: 100% auto; background-position: center 12%; }
+}
