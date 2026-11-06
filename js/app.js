@@ -16,7 +16,11 @@ const App = {
     document.getElementById('welcome').textContent = T.welcome;
     const go = document.getElementById('goBtn');
     go.textContent = T.startButton;
-    // 시작 화면 배경은 팀 첫화면 그림(assets/title) – css/common.css의 .title-art
+    // 시작 화면: PC·태블릿은 팀 첫화면 그림을 배경으로(css .title-art),
+    // 휴대폰 세로는 마을 지도(장소 확대) 위에 첫화면 그림을 작게 + 보건소장·보건 대원
+    const start = document.getElementById('start');
+    setPlaceBackground(start, C.zones.find(z => z.id === 10), 1.6);
+    sizeActors(start, 0.8);
 
     this.settings = readStudentLink();
     if (!this.settings) {

@@ -10,10 +10,11 @@ const PLACE_ZOOM = 2.6;             // 확대 배율 (화면 가로 기준)
 function setPlaceBackground(el, zone, zoom = PLACE_ZOOM) {
   const apply = () => {
     const W = el.clientWidth, H = el.clientHeight;
-    const bgW = W * zoom, bgH = bgW * MAP_H / MAP_W;
+    const bgW = Math.max(W * zoom, H * MAP_W / MAP_H), bgH = bgW * MAP_H / MAP_W;   // 세로로 긴 화면(휴대폰)에서도 빈칸 없이 채움
     const zy = Math.max(bgH / H, 1.0001);
+    const zx = Math.max(bgW / W, 1.0001);
     // 장소 가운데를 화면 가운데로 (지도 밖이 보이지 않게 0~100%로 제한)
-    const px = Math.min(Math.max((zone.viewX / 100 * zoom - 0.5) / (zoom - 1), 0), 1);
+    const px = Math.min(Math.max((zone.viewX / 100 * zx - 0.5) / (zx - 1), 0), 1);
     const py = Math.min(Math.max((zone.viewY / 100 * zy - 0.5) / (zy - 1), 0), 1);
     el.style.backgroundImage = 'url(assets/map/map.webp)';
     el.style.backgroundSize = `${bgW}px auto`;
