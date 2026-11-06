@@ -403,7 +403,7 @@ const CPR = {
     let safe = false;
     const doShock = () => {
       if (!safe) return;
-      Sound.play('aed', 0.6);
+      Sound.play('shock');
       this.turtle(a.afterBubble); this.hidePlayer();
       // 충격 직후 바로 가슴 압박 장면 (깨어나는 연출 없음)
       Mission.setMain(`<div class="cpr-row" style="display:flex;gap:18px;align-items:center">${this.pressScene(Math.min(300, innerHeight * 0.37))}

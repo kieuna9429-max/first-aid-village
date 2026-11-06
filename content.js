@@ -686,7 +686,8 @@ window.CONTENT = {
       "QUIQUEMPOIS_Justine_2016_2017_click.wav by iut_Paris8 – freesound.org/s/390150 – CC0",
       "Laser by jmayoff – freesound.org/s/253446 – CC0",
       "Rising Slide Whistle Siren Alarm [JWmcopa sample] by qubodup – freesound.org/s/870418 – CC0 / Rising Slide Whistle by JWmcopa – freesound.org/s/869126 – CC0",
-      "text_click.wav by metalfortress – freesound.org/s/611807 – CC0"
+      "text_click.wav by metalfortress – freesound.org/s/611807 – CC0",
+      "Electric Zap by rhodesmas – freesound.org/s/321724 – CC BY 4.0"
     ],
     notice: "비영리 교육용으로만 사용합니다."
   }
