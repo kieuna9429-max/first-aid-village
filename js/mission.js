@@ -242,14 +242,14 @@ const Mission = {
       action: { label: T.roundChangeButton, onClick: () => this.bag() }
     });
   },
-  /* 6-2·8·9-2구역: 회복 장면 대신 119·어른 인계 */
+  /* 6-2·8·9-2구역: 회복 장면 대신 인계 장면 */
   handoff() {
-    const T = CONTENT.text;
+    const T = CONTENT.text, nearby = this.round.handoffNearby;   // 6-2구역은 주변 사람에게 알림, 8·9-2구역은 구급대원께 맡김
     if (CONTENT.sirenRounds.includes(this.roundId)) Sound.play('siren', 0.5);
     this.setBar(0);
-    this.setNpc('care'); this.setPlayer('call');
-    this.setMain(`<div class="result ok" style="background:rgba(227,244,220,.96);font-size:24px"><span class="icon">✓</span><div><b>${esc(T.handoffTitle)}</b></div></div>`);
-    this.setDialog({ name: T.guideTag, line: T.handoffLine, action: { label: T.next, onClick: () => this.notebook() } });
+    this.setNpc('care'); this.setPlayer(nearby ? 'explain' : 'call');
+    this.setMain(`<div class="result ok" style="background:rgba(227,244,220,.96);font-size:24px"><span class="icon">✓</span><div><b>${esc(nearby ? T.handoffNearbyTitle : T.handoffTitle)}</b></div></div>`);
+    this.setDialog({ name: T.guideTag, line: nearby ? T.handoffNearbyLine : T.handoffLine, action: { label: T.next, onClick: () => this.notebook() } });
   },
 
   /* ---------- 수첩 (6·9구역은 두 라운드를 한 수첩에) ---------- */
@@ -273,7 +273,7 @@ const Mission = {
 
   /* ---------- 미션 완료·배지 ---------- */
   complete() {
-    const T = CONTENT.text, z = this.zone, handoff = !!this.talkData.handoff;
+    const T = CONTENT.text, z = this.zone, handoff = !!this.talkData.handoff, nearby = !!this.round.handoffNearby;
     App.completeZone(z.id);
     Sound.play('badge');
     this.setBar(0);
@@ -281,9 +281,9 @@ const Mission = {
     this.setMain(`<div class="board complete-box">
       <p class="big-title" style="margin:0">${esc(T.missionComplete)}</p>
       <img class="badge" src="assets/badges/${z.badge}.webp" alt="${esc(z.topic)} 배지">
-      <p class="big-title" style="font-size:24px;margin:0">${esc(fillText(handoff ? T.missionCompleteHandoff : T.missionCompleteBig, { name: z.name }))}</p></div>`);
+      <p class="big-title" style="font-size:24px;margin:0">${esc(fillText(nearby ? T.missionCompleteNearby : handoff ? T.missionCompleteHandoff : T.missionCompleteBig, { name: z.name }))}</p></div>`);
     this.setDialog({
-      name: z.name, line: this.talkData.thanks || T.handoffLine,
+      name: z.name, line: this.talkData.thanks || (nearby ? T.handoffNearbyLine : T.handoffLine),
       buttons: [
         { label: T.backToVillage, primary: true, onClick: () => this.backToVillage() },
         { label: T.notebookAgain, onClick: () => showPopup({ body: this.notebookHTML(), wide: true }) }
