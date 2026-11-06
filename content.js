@@ -478,7 +478,7 @@ window.CONTENT = {
       /* 정답 영역 (cpr_torso 그림 가로·세로 %) – A: 환자 오른쪽 쇄골 아래, B: 환자 왼쪽 유두 아래 겨드랑이 선 */
       padZones: {
         A: { pad: "aed_pad_1", x1: 30, x2: 46, y1: 46, y2: 56 },
-        B: { pad: "aed_pad_2", x1: 67, x2: 81, y1: 59, y2: 71 }
+        B: { pad: "aed_pad_2", x1: 58, x2: 76, y1: 59, y2: 72, stickX: 62, stickY: 65.5, sideways: true }   // 붙는 자리(stickX·stickY)가 유두 아래 몸 옆쪽, 패드는 가로로
       },
       hints: {
         center: "심장을 사이에 두고 양쪽에 붙여요",

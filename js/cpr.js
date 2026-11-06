@@ -309,8 +309,8 @@ const CPR = {
     const stick = (k, padEl) => {
       const z = Z[k];
       const stuck = document.createElement('img');
-      stuck.className = 'pixel pad-stuck'; stuck.src = padEl.querySelector('img').src; stuck.alt = '';
-      Object.assign(stuck.style, { left: (z.x1 + z.x2) / 2 + '%', top: (z.y1 + z.y2) / 2 + '%' });
+      stuck.className = 'pixel pad-stuck' + (z.sideways ? ' sideways' : ''); stuck.src = padEl.querySelector('img').src; stuck.alt = '';
+      Object.assign(stuck.style, { left: (z.stickX ?? (z.x1 + z.x2) / 2) + '%', top: (z.stickY ?? (z.y1 + z.y2) / 2) + '%' });
       fig.appendChild(stuck);
       padEl.style.visibility = 'hidden';
       placed[k] = true;

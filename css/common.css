@@ -454,6 +454,8 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 .pad.selected { border-color: var(--hint); background: var(--hint-bg); }
 .pad.dragging { cursor: grabbing; z-index: 20; }
 .pad-stuck { position: absolute; height: 17%; width: auto; transform: translate(-50%, -50%); pointer-events: none; }
+/* 가로로 붙이는 패드: 그림은 그대로 두고 90도 돌림 (크기는 그림 폭 기준이라 휴대폰에서도 같은 비율) */
+.pad-stuck.sideways { height: auto; width: 15.6%; transform: translate(-50%, -50%) rotate(90deg); }
 .zone-flash { position: absolute; border-radius: 8px; pointer-events: none; }
 .zone-flash.on { border: 3px dashed var(--ok); animation: softflash 1.2s ease-in-out infinite; }
 @keyframes softflash { 50% { background: rgba(63, 154, 78, .28); } }
