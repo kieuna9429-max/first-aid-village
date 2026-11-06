@@ -114,10 +114,10 @@ const Mission = {
     this.setBar(1, T.stepNames[0]);
     this.setNpc('hurt'); this.setPlayer('kit');
     const main = this.setMain(`<div class="board" style="width:100%">
-      <div class="count" style="font-family:var(--font-title);font-weight:700;text-align:right;margin-bottom:8px" id="bagCount"></div>
+      <div class="count bag-count" id="bagCount"></div>
       <div class="item-grid">${r.items.map((it, i) =>
         `<button class="item-card" data-i="${i}"><img class="pixel" src="assets/items/${it.img}.png" alt="">${esc(it.name)}</button>`).join('')}</div></div>`);
-    const count = () => { main.querySelector('#bagCount').textContent = fillText(T.bagCount, { picked: picked.size, n: need }); };
+    const count = () => { main.querySelector('#bagCount').textContent = fillText(T.bagCount, { picked: picked.size, n: need }); main.querySelector('#bagCount').classList.toggle('on', picked.size > 0); };
     count();
     main.querySelectorAll('.item-card').forEach(c => c.addEventListener('click', () => {
       const i = +c.dataset.i;
@@ -258,7 +258,7 @@ const Mission = {
     const two = zone.rounds.length === 2;
     const parts = zone.rounds.map((rid, k) => {
       const r = C.rounds[rid];
-      return `${two ? `<div class="sub">${k + 1}라운드 · ${esc(r.title)}</div>` : ''}<ol>${r.notebook.map((l, i) => `<li>${nums[i]} ${esc(l)}</li>`).join('')}</ol>`;
+      return `${two ? `<div class="sub">${k + 1}라운드 · ${esc(r.title)}</div>` : ''}<ol>${r.notebook.map((l, i) => `<li>${nums[i]} ${notebookLine(l)}</li>`).join('')}</ol>`;
     }).join('');
     return `<div class="notebook"><h2 style="margin:0">${esc(T.notebookTitle)} <span class="note">· ${zone.id}구역 ${esc(zone.topic)}</span></h2>
       <div class="sub">${esc(T.notebookHead)}</div>${parts}<div class="foot">${esc(C.notebookFooter)}</div></div>`;

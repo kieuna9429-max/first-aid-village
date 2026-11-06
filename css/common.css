@@ -174,11 +174,14 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
   font-size: 22px; font-weight: 700; text-align: center;
 }
 .item-card img { height: 78px; width: auto; }
-.item-card.picked { border-color: var(--hint); box-shadow: 0 4px 0 var(--hint); background: var(--hint-bg); }
+/* 고른 물품: 카드와 개수를 빨간색으로 눈에 띄게 */
+.bag-count { font-family: var(--font-title); font-weight: 700; text-align: right; margin-bottom: 8px; }
+.bag-count.on { color: #D32F2F; font-size: 1.2em; }
+.item-card.picked { border-color: #D32F2F; box-shadow: 0 4px 0 #D32F2F; background: #FDE7E7; color: #B71C1C; }
 .item-card.picked::before {
   content: "✓ 담았어요"; position: absolute; top: -12px; right: -8px;
   font-family: var(--font-title); font-size: 14px; color: #fff;
-  background: var(--hint); border: 2px solid var(--wood-dark); border-radius: 8px; padding: 1px 8px;
+  background: #D32F2F; border: 2px solid var(--wood-dark); border-radius: 8px; padding: 1px 8px;
 }
 
 /* ---------- 결과 표시: 색 + 아이콘 + 글자 ---------- */
@@ -383,6 +386,7 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 .notebook ol { margin: 4px 0; padding: 0; list-style: none; }
 .notebook li { line-height: 44px; font-size: 20px; }
 .notebook .sub { font-family: var(--font-title); font-weight: 700; color: var(--wood); margin-top: 6px; }
+.notebook .danger { color: #C62828; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .notebook .foot { color: var(--no); font-weight: 700; line-height: 44px; }
 .complete-box { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .complete-box .badge { height: min(300px, 36vh); width: auto; }
@@ -613,8 +617,8 @@ button { color: var(--ink); }
 
 @media (max-width: 600px) and (orientation: portrait) {
   .mission-bar:has(.step-chip:not([hidden])) .zone { display: none; }   /* 단계 표시가 있을 때는 이름 대신 그림만 */
-  .hud.top-left { top: 56px; }
-  .minimap { top: 96px; width: 130px; }
+  .hud.top-left { top: 76px; }
+  .minimap { top: 116px; width: 130px; }
   .hud.bottom { bottom: 158px; }
   .hud.bottom .btn { font-size: 20px; padding: 10px 20px; }
   .joystick { width: 118px; height: 118px; }

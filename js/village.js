@@ -81,6 +81,8 @@ const Village = {
     document.getElementById('helpBtn').addEventListener('click', () => this.help());
     document.getElementById('quickBtn').addEventListener('click', () => this.quickMove());
     document.getElementById('notebookBtn').addEventListener('click', () => this.notebookList());
+    document.getElementById('villageExitBtn').textContent = T.exit;
+    document.getElementById('villageExitBtn').addEventListener('click', () => this.exitConfirm());
     addEventListener('resize', () => this.layout());
     this.buildJoystick();
     this.buildMinimap();
@@ -258,6 +260,15 @@ const Village = {
     document.getElementById('helpBtn').hidden = true;
     App.show('mission');
     if (id === 10) CPR.start(); else Mission.start(id);
+  },
+
+  /* 마을 [나가기]: 경고창 뒤 첫 화면으로 (진행 내용은 사라짐) */
+  exitConfirm() {
+    const T = CONTENT.text;
+    showPopup({
+      title: T.villageExitTitle, body: `<p style="text-align:center">${esc(T.villageExitNote)}</p>`,
+      buttons: [{ label: T.exitContinue }, { label: T.exitConfirm, primary: true, onClick: () => App.leave() }]
+    });
   },
 
   /* 응급처치 수첩 목록: 오늘 고른 구역의 배지. 도와준 구역만 수첩을 열 수 있음 */

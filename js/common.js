@@ -117,6 +117,11 @@ function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+/* 수첩 한 줄: [[위험 신호]] 표시를 강조 글씨로 */
+function notebookLine(l) {
+  return esc(l).replace(/\[\[(.+?)\]\]/g, '<span class="danger">$1</span>');
+}
+
 /* 예상 시간(분) 글자로: 1.5 → '1분 30초', 12 → '12분' */
 function minutesText(m) {
   const whole = Math.floor(m);

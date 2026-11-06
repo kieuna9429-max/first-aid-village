@@ -46,8 +46,12 @@ const App = {
       Sound.play('click');
       this.show('village');
       Village.enter();
+      // 실수로 탭을 닫거나 뒤로 가려 할 때 브라우저 경고 (학생 이탈 방지)
+      addEventListener('beforeunload', e => { if (!this.leaving) { e.preventDefault(); e.returnValue = ''; } });
     });
   },
+  /* 경고창에서 [나가기]를 고른 경우: 브라우저 경고 없이 첫 화면으로 */
+  leave() { this.leaving = true; location.replace(location.href); },
 
   show(id) {
     document.querySelectorAll('.screen').forEach(s => { s.hidden = s.id !== id; });
