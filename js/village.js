@@ -20,6 +20,7 @@ const Village = {
     this.active = true;
     this.refresh();
     this.layout();
+    requestAnimationFrame(() => this.stackHud());
     this.loopStart();
   },
   leave() { this.active = false; this.keys.clear(); if (this.joyEnd) this.joyEnd(); },
@@ -69,7 +70,7 @@ const Village = {
     document.getElementById('notebookBtn').addEventListener('click', () => this.notebookList());
     document.getElementById('villageExitBtn').textContent = T.exit;
     document.getElementById('villageExitBtn').addEventListener('click', () => this.exitConfirm());
-    addEventListener('resize', () => this.layout());
+    addEventListener('resize', () => { this.layout(); this.stackHud(); });
     this.buildJoystick();
     this.buildMinimap();
     this.built = true;
@@ -173,6 +174,15 @@ const Village = {
       if (!b.classList.contains('done')) return toast(T.notebookLocked);
       this.openNotebook(CONTENT.zones.find(x => x.id === +b.dataset.id));
     }));
+    this.stackHud();
+  },
+  /* 왼쪽 위 차례: 모은 배지 칸 → 배지 상자 → 미니맵 (칸 높이에 맞춰 바로 아래에) */
+  stackHud() {
+    const v = document.getElementById('village'), cnt = document.getElementById('badgeCount'), box = document.getElementById('badgeSlots');
+    if (!v || v.hidden || !cnt.offsetHeight) return;
+    const top = el => el.getBoundingClientRect().top - v.getBoundingClientRect().top;
+    box.style.top = (top(cnt) + cnt.offsetHeight + 6) + 'px';
+    if (this.mm) this.mm.style.top = (top(box) + box.offsetHeight + 6) + 'px';
   },
   openNotebook(z, back) {
     const T = CONTENT.text;

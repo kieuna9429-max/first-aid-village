@@ -704,3 +704,9 @@ button { color: var(--ink); }
 .ws-page .danger { color: #C62828; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .ws-page footer { flex: none; text-align: center; font-weight: 700; font-size: 16px; border-top: 2px solid #333; padding-top: 8px; }
 @media (max-width: 840px) { .ws-preview .ws-page { zoom: .5; } }
+
+/* 마을 왼쪽 위: '해결한 주민' 칸은 빼고 모은 배지 → 배지 상자 → 미니맵 순서 (위치는 village.js stackHud) */
+#solvedBox { display: none; }
+@media (max-width: 600px) and (orientation: portrait) {
+  .minimap:not(.big) { width: 150px; }
+}
