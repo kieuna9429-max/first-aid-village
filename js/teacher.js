@@ -106,7 +106,7 @@
         const q = C.cpr.quiz;
         html += '<dl>' + q.map(s => `<dt>${esc(s.step)}</dt><dd>${esc(s.options.find(o => o.correct).text)}</dd>`).join('') +
           `<dt>리듬 트레이너</dt><dd>30회 중 좋아요 ${C.cpr.rhythm.passGood}회 이상 통과 (기준 숫자는 학생 화면에 보이지 않음)</dd>` +
-          `<dt>AED 패드</dt><dd>오른쪽 쇄골 아래 · 왼쪽 유두 아래 겨드랑이 선 (쓰러진 사람 기준)</dd>` +
+          `<dt>AED 패드</dt><dd>오른쪽 쇄골 아래 · 왼쪽 가슴 아래 겨드랑이 선 (쓰러진 사람 기준)</dd>` +
           `<dt>충격</dt><dd>상황 A 충격 필요 → 안전 확인 후 충격 → 즉시 가슴 압박 / 상황 B 충격 불필요 → 버튼 누르지 않고 즉시 가슴 압박</dd></dl>`;
       } else {
         z.rounds.forEach(rid => {
