@@ -1,6 +1,6 @@
 /* =====================================================================
    마을 지도 (village.js)
-   방향키, 화면 누르기(그 자리로 걸어가기), 빠른 이동 (안내 문구에는 없지만 W·A·S·D 키도 동작)
+   방향키·가상 조이스틱, 빠른 이동 (안내 문구에는 없지만 W·A·S·D 키도 동작)
    주민 가까이 가면 [도와주기]. 고르지 않은 구역은 잠김 표시
    (가상 조이스틱·미니맵은 2차에서 추가 예정)
    ===================================================================== */
@@ -12,7 +12,7 @@ const Village = {
   NEAR: 190,              // [도와주기]가 나오는 거리 (지도 픽셀)
   built: false,
   keys: new Set(),
-  pos: { x: 0, y: 0 }, target: null, dir: 'down', walkT: 0, moving: false,
+  pos: { x: 0, y: 0 }, dir: 'down', walkT: 0, moving: false,
   nearId: null, lockedToastId: null, active: false,
 
   enter() {
@@ -22,7 +22,7 @@ const Village = {
     this.layout();
     this.loopStart();
   },
-  leave() { this.active = false; this.keys.clear(); this.target = null; },
+  leave() { this.active = false; this.keys.clear(); if (this.joyEnd) this.joyEnd(); },
 
   build() {
     const C = CONTENT, T = C.text;
@@ -40,9 +40,7 @@ const Village = {
       el.innerHTML = `<span class="marker"></span><img class="pixel" src="assets/chars/${z.char}.png" alt="${esc(z.name)}"><span class="npc-name">${z.id}구역 ${esc(z.name)}</span>`;
       // 머리 위 '!'를 누르면 거리와 상관없이 바로 미션 시작 (완료·잠김 표시는 누르지 않음)
       const marker = el.querySelector('.marker');
-      marker.addEventListener('pointerdown', e => { if (marker.classList.contains('need')) e.stopPropagation(); });
-      marker.addEventListener('click', e => {
-        e.stopPropagation();
+      marker.addEventListener('click', () => {
         if (this.active && marker.classList.contains('need')) this.startZone(z.id);
       });
       this.world.appendChild(el);
@@ -60,23 +58,11 @@ const Village = {
     addEventListener('keydown', e => {
       if (!this.active || document.querySelector('.overlay')) return;
       const k = e.key.toLowerCase();
-      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(k)) { this.keys.add(k); this.target = null; e.preventDefault(); }
+      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(k)) { this.keys.add(k); e.preventDefault(); }
       if ((k === 'enter' || k === ' ') && this.nearId) { e.preventDefault(); this.help(); }
     });
     addEventListener('keyup', e => this.keys.delete(e.key.toLowerCase()));
     addEventListener('blur', () => this.keys.clear());
-
-    // 화면 누르기 → 그 자리로 걸어가기
-    this.world.addEventListener('pointerdown', e => {
-      if (!this.active) return;
-      const r = this.world.getBoundingClientRect();
-      const x = (e.clientX - r.left) / this.s, y = (e.clientY - r.top) / this.s;
-      this.target = { x: Math.min(Math.max(x, 40), this.MAP_W - 40), y: Math.min(Math.max(y, 120), this.MAP_H - 10) };
-      const dot = document.createElement('div');
-      dot.className = 'target-dot';
-      dot.style.left = (this.target.x * this.s) + 'px'; dot.style.top = (this.target.y * this.s) + 'px';
-      this.world.appendChild(dot); setTimeout(() => dot.remove(), 600);
-    });
 
     document.getElementById('helpBtn').addEventListener('click', () => this.help());
     document.getElementById('quickBtn').addEventListener('click', () => this.quickMove());
@@ -112,10 +98,12 @@ const Village = {
     const end = () => { id = null; this.joy = null; knob.style.transform = ''; };
     base.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); id = e.pointerId; try { base.setPointerCapture(id); } catch (_) {} move(e); });
     base.addEventListener('pointermove', e => { if (e.pointerId === id) move(e); });
-    base.addEventListener('pointerup', end); base.addEventListener('pointercancel', end);
+    base.addEventListener('pointerup', end); base.addEventListener('pointercancel', end); base.addEventListener('lostpointercapture', end);
+    this.joyEnd = end;   // 손을 떼면 바로 멈춤 (미션에 들어갈 때·창을 벗어날 때도)
+    addEventListener('blur', end);
   },
 
-  /* 미니맵: 지도(같은 그림)를 작게 보여 주고 주민(! / ✓ / 잠김)과 보건 대원 위치 표시. 누르면 그곳으로 걸어감 */
+  /* 미니맵: 지도(같은 그림)를 작게 보여 주고 주민(! / ✓ / 잠김)과 보건 대원 위치 표시. 누르면 크게, 다시 누르면 원래 크기로 */
   buildMinimap() {
     const mm = document.createElement('div');
     mm.className = 'minimap'; mm.setAttribute('aria-label', '미니맵');
@@ -123,12 +111,7 @@ const Village = {
       `<div class="mm-npc" data-id="${z.id}" style="left:${z.x}%;top:${z.y}%"></div>`).join('');
     this.view.appendChild(mm);
     this.mm = mm;
-    mm.addEventListener('pointerdown', e => {
-      e.stopPropagation();
-      const r = mm.getBoundingClientRect();
-      this.target = { x: (e.clientX - r.left) / r.width * this.MAP_W, y: Math.min(Math.max((e.clientY - r.top) / r.height * this.MAP_H, 120), this.MAP_H - 10) };
-      Sound.play('click', 0.4);
-    });
+    mm.addEventListener('click', () => { mm.classList.toggle('big'); Sound.play('click', 0.4); });   // 누르면 크게, 다시 누르면 원래 크기로
   },
   drawMinimap() {
     if (!this.mm) return;
@@ -193,11 +176,7 @@ const Village = {
     if (K.has('arrowright') || K.has('d')) vx += 1;
     if (K.has('arrowup') || K.has('w')) vy -= 1;
     if (K.has('arrowdown') || K.has('s')) vy += 1;
-    if (!vx && !vy && this.joy) { vx = this.joy.x; vy = this.joy.y; this.target = null; }   // 가상 조이스틱
-    if (!vx && !vy && this.target) {
-      const dx = this.target.x - this.pos.x, dy = this.target.y - this.pos.y, d = Math.hypot(dx, dy);
-      if (d < 8) this.target = null; else { vx = dx / d; vy = dy / d; }
-    }
+    if (!vx && !vy && this.joy) { vx = this.joy.x; vy = this.joy.y; }   // 가상 조이스틱
     this.moving = !!(vx || vy);
     if (this.moving) {
       const len = Math.hypot(vx, vy), sp = this.SPEED * Math.min(1, len);   // 조이스틱은 많이 밀수록 빠르게
@@ -311,7 +290,7 @@ const Village = {
     overlay.querySelectorAll('.quick-list .btn').forEach(b => b.addEventListener('click', () => {
       const z = CONTENT.zones.find(x => x.id === +b.dataset.id);
       this.pos = { x: z.x / 100 * this.MAP_W, y: z.y / 100 * this.MAP_H + 70 };
-      this.dir = 'up'; this.target = null;
+      this.dir = 'up';
       close(); Sound.play('click');
       this.draw(); this.checkNear();
     }));

@@ -152,7 +152,7 @@ const CPR = {
           <div class="counters"><span id="rCount"></span><span id="rGood"></span></div>
           <div id="rSpeed" class="note"></div>
           <div id="rJudge" class="judge"></div>
-          ${App.sound.metronome ? '' : `<div class="note">🔇 ${esc(P.metronomeOff)}</div>`}
+          <div class="note" id="metroNote"${App.sound.metronome ? ' hidden' : ''}>🔇 ${esc(P.metronomeOff)}</div>
         </div>
       </div>
       <button class="btn press-btn" id="pressBtn">${esc(R.pressButton)}</button></div>`);
@@ -195,7 +195,6 @@ const CPR = {
       if (st.total >= R.total) { st.over = true; setTimeout(() => this.rhythmResult(st.good), 400); }
     };
     $('pressBtn').addEventListener('pointerdown', e => { e.preventDefault(); press(); });
-    main.querySelector('.press-scene').addEventListener('pointerdown', e => { e.preventDefault(); press(); });
     this.keyHandler = e => {
       if (e.code === 'Space' && !e.repeat && !document.querySelector('.overlay')) { e.preventDefault(); press(); }
     };
@@ -228,17 +227,10 @@ const CPR = {
   startMetronome(bpm, onBeat) {
     this.stopMetronome();
     const period = 60 / bpm;
-    let clock = null;
-    if (App.sound.metronome) {
-      if (!this.metroAudio) { this.metroAudio = new Audio('assets/sounds/metronome_110bpm.mp3'); this.metroAudio.loop = true; this.metroAudio.preload = 'auto'; }
-      const a = this.metroAudio;
-      try { a.currentTime = 0; } catch (e) {}
-      a.volume = 1;
-      a.play().catch(() => {});        // 버튼을 누른 순간 바로 재생 (아이패드 소리 허용)
-      clock = () => (a.paused ? null : a.currentTime);
-    }
+    this.metroRunning = true;
+    this.syncMetronome();
     const s0 = performance.now();
-    const timeNow = () => { const t = clock && clock(); return t == null ? (performance.now() - s0) / 1000 : t; };
+    const timeNow = () => { const a = this.metroAudio; return a && !a.paused ? a.currentTime : (performance.now() - s0) / 1000; };
     let last = -1;
     const frame = () => {
       const beat = Math.floor(timeNow() / period + 0.02);
@@ -247,7 +239,22 @@ const CPR = {
     };
     this.metroRaf = requestAnimationFrame(frame);
   },
+  /* 소리 버튼으로 메트로놈을 켜고 끄면 리듬 연습 도중에도 바로 적용 */
+  syncMetronome() {
+    const note = document.getElementById('metroNote');
+    if (note) note.hidden = App.sound.metronome;
+    if (!this.metroRunning) return;
+    if (App.sound.metronome) {
+      if (!this.metroAudio) { this.metroAudio = new Audio('assets/sounds/metronome_110bpm.mp3'); this.metroAudio.loop = true; this.metroAudio.preload = 'auto'; }
+      const a = this.metroAudio;
+      if (!a.paused) return;
+      try { a.currentTime = 0; } catch (e) {}
+      a.volume = 1;
+      a.play().catch(() => {});        // 버튼을 누른 순간 바로 재생 (아이패드 소리 허용)
+    } else if (this.metroAudio) this.metroAudio.pause();
+  },
   stopMetronome() {
+    this.metroRunning = false;
     cancelAnimationFrame(this.metroRaf);
     if (this.metroAudio) this.metroAudio.pause();
     if (this.keyHandler) { removeEventListener('keydown', this.keyHandler); this.keyHandler = null; }

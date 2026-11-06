@@ -633,7 +633,7 @@ window.CONTENT = {
     notebookLocked: "아직 도와주지 않았어요",
     notebookBack: "◀ 수첩 목록",
     close: "닫기",
-    moveHelp: "방향키 또는 화면을 눌러 움직여요",
+    moveHelp: "방향키로 움직여요",
     stepNames: ["구급가방", "O/X", "행동 선택"]
   },
 

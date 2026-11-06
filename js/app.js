@@ -77,6 +77,7 @@ const App = {
       Sound.sfxOn = this.sound.sfx;
       this.refreshSoundButtons();
       this.updateBgm(!document.getElementById('village').hidden);
+      if (typeof CPR !== 'undefined') CPR.syncMetronome();
     }));
   },
   /* 배경음: 마을 탐험 중에만 반복, 미션(문제 읽기) 중에는 일시정지 */

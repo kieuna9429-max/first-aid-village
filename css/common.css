@@ -320,7 +320,7 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
    ===================================================================== */
 .screen[hidden] { display: none !important; }
 .village { position: fixed; inset: 0; overflow: hidden; background: var(--grass-dark); touch-action: none; user-select: none; }
-.world { position: absolute; left: 0; top: 0; transform-origin: 0 0; background: url(../assets/map/map.webp) 0 0 / 100% 100% no-repeat; cursor: pointer; }
+.world { position: absolute; left: 0; top: 0; transform-origin: 0 0; background: url(../assets/map/map.webp) 0 0 / 100% 100% no-repeat; }
 .npc { position: absolute; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; pointer-events: none; }
 .npc img { display: block; }
 .marker {
@@ -334,8 +334,6 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 @keyframes bob { 50% { transform: translateY(-6px); } }
 .npc-name { font-family: var(--font-small); font-size: 15px; background: rgba(255, 243, 220, .92); border: 2px solid var(--wood); border-radius: 6px; padding: 0 6px; margin-top: 2px; white-space: nowrap; }
 .player-sprite { position: absolute; width: 112px; height: 150px; transform: translate(-50%, -100%); background: url(../assets/player/player_walk.png?v=20261106) 0 0 / 448px 600px no-repeat; image-rendering: pixelated; pointer-events: none; }
-.target-dot { position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px; border: 3px solid #fff; border-radius: 50%; pointer-events: none; animation: fade .6s forwards; }
-@keyframes fade { to { opacity: 0; transform: scale(1.8); } }
 
 .hud { position: absolute; z-index: 5; }
 .hud.top-left { left: 14px; top: 14px; }
@@ -437,7 +435,6 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 .rhythm-top { background: rgba(255, 243, 220, .93); border: 2px solid var(--wood); border-radius: 8px; padding: 4px 12px; text-align: center; }
 .rhythm-body { display: flex; gap: 18px; align-items: center; }
 /* 가슴 압박 장면 (cpr_press 그림 한 장) */
-.press-scene { cursor: pointer; }
 .press-scene .presser { transform-origin: 50% 100%; }
 /* 누를 때마다 살짝 눌렸다 올라옴 + 손 위치에 '꾹' 표시 (누르는 시늉) */
 .presser.down { animation: press .22s ease-out; }
@@ -607,7 +604,8 @@ button { color: var(--ink); }
 .village.touch .hud.bottom-left { display: none; }
 /* 미니맵 (지도 그림 그대로 작게) */
 .minimap { position: absolute; z-index: 6; left: 14px; top: 64px; width: 200px; aspect-ratio: 2752 / 1536;
-  background: url(../assets/map/map.webp) 0 0 / 100% 100%; border: 3px solid var(--wood-dark); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; }
+  background: url(../assets/map/map.webp) 0 0 / 100% 100%; border: 3px solid var(--wood-dark); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; transition: width .15s; }
+.minimap.big { width: min(560px, 90vw); z-index: 7; }
 .mm-npc, .mm-me { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; }
 .mm-npc { width: 10px; height: 10px; border: 2px solid #fff; }
 .mm-npc.need { background: var(--gold); box-shadow: 0 0 0 2px var(--wood-dark); }
@@ -619,6 +617,7 @@ button { color: var(--ink); }
   .mission-bar:has(.step-chip:not([hidden])) .zone { display: none; }   /* 단계 표시가 있을 때는 이름 대신 그림만 */
   .hud.top-left { top: 76px; }
   .minimap { top: 116px; width: 130px; }
+  .minimap.big { width: 90vw; }
   .hud.bottom { bottom: 158px; }
   .hud.bottom .btn { font-size: 20px; padding: 10px 20px; }
   .joystick { width: 118px; height: 118px; }
