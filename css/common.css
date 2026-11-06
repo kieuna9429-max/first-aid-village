@@ -702,14 +702,4 @@ button { color: var(--ink); }
 .ws-check { display: inline-block; width: 15px; height: 15px; border: 1.5px solid #333; border-radius: 3px; margin-right: 8px; vertical-align: -2px; }
 .ws-page .danger { color: #C62828; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .ws-page footer { flex: none; text-align: center; font-weight: 700; font-size: 16px; border-top: 2px solid #333; padding-top: 8px; }
-#printRoot { display: none; }
-@media print {
-  @page { size: A4; margin: 0; }
-  html, body { height: auto !important; min-height: 0 !important; margin: 0; padding: 0 !important; background: #fff !important; }
-  body > *:not(#printRoot) { display: none !important; }
-  #printRoot { display: block; }
-  #printRoot .ws-page { break-after: page; box-shadow: none; height: 296mm; overflow: hidden; }
-  #printRoot .ws-page:last-child { break-after: auto; }
-  .ws-page, .ws-page * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-}
 @media (max-width: 840px) { .ws-preview .ws-page { zoom: .5; } }

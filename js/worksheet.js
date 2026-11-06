@@ -61,11 +61,25 @@ const Worksheet = {
     host.innerHTML = pages.map(p => this.pageHTML(p)).join('');
   },
 
+  /* 인쇄: 활동지만 담은 새 창을 열고 글꼴을 불러온 뒤 인쇄 창을 띄움 */
   print(host) {
-    let root = document.getElementById('printRoot');
-    if (!root) { root = document.createElement('div'); root.id = 'printRoot'; document.body.appendChild(root); }
-    root.innerHTML = host.innerHTML;
-    window.print();
+    const w = window.open('', '_blank');
+    if (!w) { toast(CONTENT.teacher.sheetPrintBlocked); return; }
+    const links = [...document.querySelectorAll('link[rel="stylesheet"]')].map(l => `<link rel="stylesheet" href="${l.href}">`).join('');
+    w.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${esc(CONTENT.teacher.sheetPaperTitle)}</title>${links}
+      <style>@page { size: A4; margin: 0; }
+      html, body { height: auto; margin: 0; background: #fff; }
+      .ws-page { height: 296mm; overflow: hidden; break-after: page; margin: 0 auto; }
+      .ws-page:last-child { break-after: auto; }
+      .ws-page, .ws-page * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }</style></head>
+      <body>${host.innerHTML}</body></html>`);
+    w.document.close();
+    const go = () => {
+      w.document.fonts.ready.then(() => {
+        w.focus(); w.print();
+      });
+    };
+    if (w.document.readyState === 'complete') go(); else w.addEventListener('load', go);
   },
 
   loadScript(src) {

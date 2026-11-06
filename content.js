@@ -680,7 +680,7 @@ window.CONTENT = {
     sheetBlank: "핵심 빈칸형", sheetBlankNote: "꼭 기억할 낱말을 빈칸으로 채워요",
     sheetFull: "수첩 전체형", sheetFullNote: "수첩 내용을 모두 읽고 점검해요",
     sheetGuide: "[인쇄하기]를 누르면 인쇄 창이 열려요. 파일로 받으려면 [PDF로 저장]을 눌러요.",
-    sheetPrint: "인쇄하기", sheetPdf: "PDF로 저장", sheetPdfWorking: "PDF 만드는 중…", sheetPdfFail: "PDF를 만들지 못했어요. 다시 눌러 주세요.",
+    sheetPrint: "인쇄하기", sheetPrintBlocked: "새 창이 막혔어요. 브라우저에서 팝업을 허용해 주세요.", sheetPdf: "PDF로 저장", sheetPdfWorking: "PDF 만드는 중…", sheetPdfFail: "PDF를 만들지 못했어요. 다시 눌러 주세요.",
     sheetPaperTitle: "응급처치 마을 방범대 활동지",
     sheetPaperFoot: "친구를 도운 뒤에는 꼭 보건 선생님이나 주변 사람에게 알려요!",
     stickyNone: "구역을 골라 주세요",
