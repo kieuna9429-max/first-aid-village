@@ -3,7 +3,8 @@
    모든 화면(학생·교사)이 이 파일 하나를 함께 씁니다.
    화면마다 색·글꼴·버튼을 따로 만들지 않고, 여기 있는 것만 씁니다.
    색은 지도(map) 그림의 표지판·나무·잔디 색에서 뽑았습니다.
-   글꼴: 갈무리11·갈무리9 (픽셀, OFL 무료 글꼴) – css/fonts.css에서 불러옴
+   글꼴: 학생 화면은 갈무리11·갈무리9 (픽셀, OFL 무료 글꼴) – css/fonts.css에서 불러옴
+         교사용 화면·활동지는 프리텐다드 (OFL 무료 글꼴) – css/pretendard.css에서 불러옴
    ===================================================================== */
 
 :root {
@@ -239,6 +240,12 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 /* =====================================================================
    교사용 관리자 화면
    ===================================================================== */
+/* 교사용 화면·활동지 글꼴: 프리텐다드. 이 페이지 안의 팝업·QR 화면까지 모두 적용됨 */
+.teacher-page {
+  --font-title: "Pretendard Variable", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+  --font-body:  var(--font-title);
+  --font-small: var(--font-title);
+}
 .teacher-page { min-height: 100vh; padding: 28px 20px 40px; background: var(--grass-dark); position: relative; }
 /* 지도 배경을 화면에 고정 (태블릿에서도 동작하도록 고정 층으로) + 살짝 어둡게 */
 .teacher-page::before { content: ""; position: fixed; inset: 0; background: linear-gradient(rgba(40, 28, 20, .38), rgba(40, 28, 20, .38)), url(../assets/map/map.webp) center / cover; }

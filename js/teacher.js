@@ -193,7 +193,7 @@
 
   /* QR 이미지 저장 (PNG) – 제목과 안내 글자 포함 */
   $('saveBtn').addEventListener('click', async () => {
-    try { await document.fonts.ready; } catch (e) {}
+    try { await document.fonts.load('700 38px "Pretendard Variable"', C.appName); await document.fonts.ready; } catch (e) {}
     const qrCv = document.createElement('canvas');
     const qrSize = drawQR(qrCv, state.link, 12);
     const pad = 40, top = 120, bottom = 90;
@@ -202,13 +202,13 @@
     const g = out.getContext('2d');
     g.fillStyle = '#fff'; g.fillRect(0, 0, out.width, out.height);
     g.fillStyle = '#4a3530'; g.textAlign = 'center';
-    g.font = '700 38px Galmuri11, sans-serif';
+    g.font = '700 38px "Pretendard Variable", sans-serif';
     g.fillText(C.appName, out.width / 2, 70);
-    g.font = '400 24px Galmuri11, sans-serif';
+    g.font = '400 24px "Pretendard Variable", sans-serif';
     g.fillText(T.qrBigText, out.width / 2, 106);
     g.drawImage(qrCv, pad, top);
     const names = C.zones.filter(z => state.zones.has(z.id)).map(z => z.id).join('·');
-    g.font = '400 22px Galmuri9, sans-serif';
+    g.font = '400 22px "Pretendard Variable", sans-serif';
     g.fillText(`구역 ${names}`, out.width / 2, top + qrSize + 50);
     out.toBlob(blob => {
       const a = document.createElement('a');
@@ -227,7 +227,7 @@
       <p>${esc(cr.art)}</p>
       <p><b>효과음 출처</b></p>
       <ol style="font-size:16px;padding-left:24px;margin:0">${cr.sounds.map(s => `<li>${esc(s)}</li>`).join('')}</ol>
-      <p><b>글꼴</b><br><span style="font-size:16px">갈무리(Galmuri) © Lee Minseo (Quiple) – SIL Open Font License 1.1</span></p>
+      <p><b>글꼴</b><br><span style="font-size:16px">갈무리(Galmuri) © Lee Minseo (Quiple) – SIL Open Font License 1.1<br>프리텐다드(Pretendard) © Kil Hyung-jin – SIL Open Font License 1.1</span></p>
       <p><b>QR 코드</b><br><span style="font-size:16px">QRCode for JavaScript © Kazuhiko Arase – MIT License. "QR Code"는 DENSO WAVE의 등록 상표예요.</span></p>
       <p style="text-align:center"><b>${esc(cr.notice)}</b></p>`;
     showPopup({ title: T.creditsButton, body, wide: true });

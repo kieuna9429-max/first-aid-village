@@ -1,0 +1,5 @@
+/* 프리텐다드 글꼴 (v1.3.9, SIL Open Font License – assets/fonts/Pretendard-LICENSE-OFL.txt)
+   교사용 화면과 활동지에서 씁니다. 학생 게임 화면은 갈무리(css/fonts.css) 그대로입니다.
+   사이트 안에 글꼴 파일을 함께 넣어 두어, 학교망에서 글꼴 사이트가 막혀도 그대로 보입니다.
+   가변 글꼴이라 파일 하나로 Thin(100)~Bold(700) 굵기를 모두 쓸 수 있습니다. */
+@font-face { font-family: "Pretendard Variable"; font-weight: 45 920; font-style: normal; font-display: swap; src: url('../assets/fonts/PretendardVariable.woff2') format('woff2'); }
