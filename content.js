@@ -16,16 +16,16 @@ window.CONTENT = {
      viewX, viewY : 미션 화면 배경으로 확대해 보여 줄 장소의 가운데 (지도 %)
      --------------------------------------------------------------- */
   zones: [
-    { id: 1,  name: "너구리",       topic: "화상",            place: "너구리 라면",   char: "zone1_raccoon",    badge: "badge_01", time: [3, 5],  rounds: ["1"],        x: 31, y: 30, viewX: 29, viewY: 17 },
-    { id: 2,  name: "제비",         topic: "발목 염좌",        place: "흥부네 집",     char: "zone2_swallow",    badge: "badge_02", time: [3, 5],  rounds: ["2"],        x: 50, y: 28, viewX: 50, viewY: 15 },
-    { id: 3,  name: "호랑이",       topic: "영구치 손상",      place: "떡 방앗간",     char: "zone3_tiger",      badge: "badge_03", time: [3, 5],  rounds: ["3"],        x: 82, y: 55, viewX: 86, viewY: 37 },
-    { id: 4,  name: "곰돌이",       topic: "벌 쏘임",          place: "꿀벌 꽃밭",     char: "zone4_bear",       badge: "badge_04", time: [3, 5],  rounds: ["4"],        x: 80, y: 65, viewX: 80, viewY: 62 },
-    { id: 5,  name: "코끼리",       topic: "코피",             place: "도토리 숲",     char: "zone5_elephant",   badge: "badge_05", time: [3, 5],  rounds: ["5"],        x: 80, y: 86, viewX: 82, viewY: 83 },
-    { id: 6,  name: "아기 토끼",    topic: "찰과상·심한 출혈", place: "달리기 운동장", char: "zone6_rabbit",     badge: "badge_06", time: [5, 8],  rounds: ["6-1", "6-2"], x: 50, y: 82, viewX: 50, viewY: 87 },
-    { id: 7,  name: "악어",         topic: "눈 이물질",        place: "모래 놀이터",   char: "zone7_crocodile",  badge: "badge_07", time: [3, 5],  rounds: ["7"],        x: 22, y: 76, viewX: 22, viewY: 74 },
-    { id: 8,  name: "다람쥐",       topic: "아나필락시스",     place: "밤 축제 마당",  char: "zone8_squirrel",   badge: "badge_08", time: [3, 5],  rounds: ["8"],        x: 22, y: 50, viewX: 20, viewY: 48 },
-    { id: 9,  name: "딱따구리",     topic: "머리 손상",        place: "숲속 축구장",   char: "zone9_woodpecker", badge: "badge_09", time: [5, 8],  rounds: ["9-1", "9-2"], x: 72, y: 20, viewX: 72, viewY: 20 },
-    { id: 10, name: "거북이 촌장님", topic: "심폐소생술·AED",  place: "가운데 분수 광장", char: "zone10_turtle", badge: "badge_10", time: [6, 10], rounds: [],           x: 50, y: 57, viewX: 50, viewY: 50 }
+    { id: 1,  name: "너구리",       topic: "화상",            place: "너구리 라면",   char: "zone1_raccoon",    badge: "badge_01", time: 1,    rounds: ["1"],        x: 31, y: 30, viewX: 29, viewY: 17 },
+    { id: 2,  name: "제비",         topic: "발목 염좌",        place: "흥부네 집",     char: "zone2_swallow",    badge: "badge_02", time: 1,    rounds: ["2"],        x: 50, y: 28, viewX: 50, viewY: 15 },
+    { id: 3,  name: "호랑이",       topic: "영구치 손상",      place: "떡 방앗간",     char: "zone3_tiger",      badge: "badge_03", time: 1,    rounds: ["3"],        x: 82, y: 55, viewX: 86, viewY: 37 },
+    { id: 4,  name: "곰돌이",       topic: "벌 쏘임",          place: "꿀벌 꽃밭",     char: "zone4_bear",       badge: "badge_04", time: 1,    rounds: ["4"],        x: 80, y: 65, viewX: 80, viewY: 62 },
+    { id: 5,  name: "코끼리",       topic: "코피",             place: "도토리 숲",     char: "zone5_elephant",   badge: "badge_05", time: 1,    rounds: ["5"],        x: 80, y: 86, viewX: 82, viewY: 83 },
+    { id: 6,  name: "아기 토끼",    topic: "찰과상·심한 출혈", place: "달리기 운동장", char: "zone6_rabbit",     badge: "badge_06", time: 1.5,  rounds: ["6-1", "6-2"], x: 50, y: 82, viewX: 50, viewY: 87 },
+    { id: 7,  name: "악어",         topic: "눈 이물질",        place: "모래 놀이터",   char: "zone7_crocodile",  badge: "badge_07", time: 1,    rounds: ["7"],        x: 22, y: 76, viewX: 22, viewY: 74 },
+    { id: 8,  name: "다람쥐",       topic: "아나필락시스",     place: "밤 축제 마당",  char: "zone8_squirrel",   badge: "badge_08", time: 1,    rounds: ["8"],        x: 22, y: 50, viewX: 20, viewY: 48 },
+    { id: 9,  name: "딱따구리",     topic: "머리 손상",        place: "숲속 축구장",   char: "zone9_woodpecker", badge: "badge_09", time: 1.5,  rounds: ["9-1", "9-2"], x: 72, y: 20, viewX: 72, viewY: 20 },
+    { id: 10, name: "거북이 촌장님", topic: "심폐소생술·AED",  place: "가운데 분수 광장", char: "zone10_turtle", badge: "badge_10", time: 2,   rounds: [],           x: 50, y: 57, viewX: 50, viewY: 50 }
   ],
 
   /* ---------------------------------------------------------------
@@ -642,8 +642,8 @@ window.CONTENT = {
     soundNames: { bgm: "배경음", sfx: "효과음", metronome: "메트로놈(10구역)" },
     soundNote: "처음에는 모두 꺼져 있어요. 학생도 화면에서 켜고 끌 수 있어요.",
     checkHead: "③ 확인하기",
-    summary: "선택 {n}개 구역 · 예상 시간 {min}~{max}분",
-    timeNote: "학생 시범 사용 전 예상치예요.",
+    summary: "선택 {n}개 구역 · 예상 시간 약 {time}",
+    timeNote: "학생이 직접 해 본 시간을 바탕으로 한 예상 시간이에요.",
     answerPreview: "정답·해설 미리보기",
     answerBag: "구급가방 정답({n}개)",
     answerNote: "교사용 주소에서만 보여요. 학생용 링크에는 정답이 들어가지 않아요.",
@@ -652,7 +652,7 @@ window.CONTENT = {
     makeButton: "링크·QR 만들기",
     stickyNone: "구역을 골라 주세요",
     stickyPicked: "{n}개 구역 선택",
-    stickyTime: "예상 {min}~{max}분",
+    stickyTime: "예상 약 {time}",
     creditsButton: "만든 사람 · 소리 출처",
     noZoneTitle: "구역을 1개 이상 골라 주세요",
     noZoneNote: "구역을 고르지 않으면 링크와 QR을 만들 수 없어요.",

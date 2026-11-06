@@ -38,6 +38,13 @@ const Village = {
       const el = document.createElement('div');
       el.className = 'npc';
       el.innerHTML = `<span class="marker"></span><img class="pixel" src="assets/chars/${z.char}.png" alt="${esc(z.name)}"><span class="npc-name">${z.id}구역 ${esc(z.name)}</span>`;
+      // 머리 위 '!'를 누르면 거리와 상관없이 바로 미션 시작 (완료·잠김 표시는 누르지 않음)
+      const marker = el.querySelector('.marker');
+      marker.addEventListener('pointerdown', e => { if (marker.classList.contains('need')) e.stopPropagation(); });
+      marker.addEventListener('click', e => {
+        e.stopPropagation();
+        if (this.active && marker.classList.contains('need')) this.startZone(z.id);
+      });
       this.world.appendChild(el);
       this.npcEls[z.id] = el;
     });
@@ -203,13 +210,13 @@ const Village = {
   draw() {
     if (!this.s) return;
     const k = this.PLAYER_SCALE * this.s, fw = 112 * k, fh = 150 * k;
-    // 걷기 그림 칸: 정면(1행)·뒷모습(2행)·옆모습(3행 2~4칸, 왼쪽은 좌우 반전)
-    const frames = { down: [[0, 0], [0, 1], [0, 2], [0, 3]], up: [[1, 0], [1, 1], [1, 2], [1, 3]], right: [[2, 1], [2, 2], [2, 3]], left: [[2, 1], [2, 2], [2, 3]] }[this.dir];
+    // 걷기 그림 칸: 정면(1행)·뒷모습(2행)·오른쪽(3행)·왼쪽(4행)
+    const frames = { down: [0, 1, 2, 3].map(c => [0, c]), up: [0, 1, 2, 3].map(c => [1, c]), right: [0, 1, 2, 3].map(c => [2, c]), left: [0, 1, 2, 3].map(c => [3, c]) }[this.dir];
     const f = this.moving ? frames[Math.floor(this.walkT * 8) % frames.length] : frames[0];
     this.player.style.backgroundPosition = `${-f[1] * fw}px ${-f[0] * fh}px`;
     this.player.style.left = (this.pos.x * this.s) + 'px';
     this.player.style.top = (this.pos.y * this.s) + 'px';
-    this.player.style.transform = `translate(-50%, -100%)${this.dir === 'left' ? ' scaleX(-1)' : ''}`;
+    this.player.style.transform = 'translate(-50%, -100%)';
     this.player.style.zIndex = Math.round(this.pos.y);
     // 카메라: 보건 대원을 가운데로 (지도 밖은 안 보이게)
     const W = this.view.clientWidth, H = this.view.clientHeight;
@@ -239,9 +246,10 @@ const Village = {
   },
 
   help() {
-    if (!this.nearId) return;
+    if (this.nearId) this.startZone(this.nearId);
+  },
+  startZone(id) {
     Sound.play('click');
-    const id = this.nearId;
     if (id === 10 && typeof CPR === 'undefined') {
       showPopup({ title: '10구역 심폐소생술·AED', body: '<p style="text-align:center">10구역은 3단계에서 이어서 만들어요.</p>' });
       return;

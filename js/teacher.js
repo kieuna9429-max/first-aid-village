@@ -53,7 +53,7 @@
       <div class="pic"><img class="pixel" src="assets/chars/${z.char}.png" alt=""></div>
       <div class="zname">${z.id}구역 · ${esc(z.topic)}</div>
       <div class="zplace">${esc(z.name)} · ${esc(z.place)}${rounds}</div>
-      <div class="ztime">${z.time[0]}~${z.time[1]}분</div>`;
+      <div class="ztime">약 ${minutesText(z.time)}</div>`;
     card.addEventListener('click', () => { toggleZone(z.id); });
     card.dataset.id = z.id;
     grid.appendChild(card);
@@ -85,12 +85,11 @@
       b.innerHTML = `${esc(T.soundNames[b.dataset.key])} <span class="state">${on ? '켜기' : '끄기'}</span>`;
     });
     const picked = C.zones.filter(z => state.zones.has(z.id));
-    const min = picked.reduce((s, z) => s + z.time[0], 0);
-    const max = picked.reduce((s, z) => s + z.time[1], 0);
-    $('summary').textContent = fillText(T.summary, { n: picked.length, min, max });
+    const time = minutesText(picked.reduce((s, z) => s + z.time, 0));
+    $('summary').textContent = fillText(T.summary, { n: picked.length, time });
     // 휴대폰 아래 띠
     $('stickySum').innerHTML = picked.length
-      ? `<b>${esc(fillText(T.stickyPicked, { n: picked.length }))}</b><br>${esc(fillText(T.stickyTime, { min, max }))}`
+      ? `<b>${esc(fillText(T.stickyPicked, { n: picked.length }))}</b><br>${esc(fillText(T.stickyTime, { time }))}`
       : `<b>${esc(T.stickyNone)}</b>`;
   }
   render();
