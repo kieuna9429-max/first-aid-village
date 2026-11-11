@@ -717,3 +717,41 @@ button { color: var(--ink); }
 @media (max-width: 600px) and (orientation: portrait) {
   .badge-slots { --slot: 27px; }
 }
+
+/* =====================================================================
+   SENSE 초등보건교육연구회 이름표 (A안 · 나무 표지판형)
+   학생 첫 화면 · 교사용 화면 오른쪽 위. 색은 마을 표지판 나무색·살구색.
+   글꼴은 페이지 글꼴을 그대로 따름: 학생 화면 갈무리11, 교사용 화면 프리텐다드
+   ===================================================================== */
+.sense-tag {
+  position: absolute; top: 16px; right: 18px; z-index: 5;
+  display: inline-flex; align-items: stretch;
+  border: var(--line) solid var(--wood-dark); border-radius: var(--radius);
+  box-shadow: 0 4px 0 var(--wood-dark); overflow: hidden;
+  font-family: var(--font-title); font-weight: 700; font-size: 22px; line-height: 1.3;
+  white-space: nowrap; pointer-events: none; user-select: none;
+}
+.scene > .sense-tag { position: absolute; }   /* 장면 칸 공통 규칙(position: relative)보다 우선 */
+.sense-tag .s-en { display: flex; align-items: center; padding: 6px 12px; background: var(--wood-dark); color: #fff; letter-spacing: 2px; }
+.sense-tag .s-ko { display: flex; align-items: center; padding: 6px 14px; background: var(--sign); color: var(--ink); }
+
+/* 교사용 화면: 프리텐다드에 맞춰 조금 작게 */
+.teacher-page .sense-tag { font-size: 19px; }
+.teacher-page .sense-tag .s-en { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+/* 교사용 화면이 좁을 때: 가운데 제목과 겹치지 않게 제목 위 오른쪽에 따로 한 줄 */
+@media (max-width: 1300px) {
+  .teacher-page .sense-tag { position: relative; top: auto; right: auto; display: flex; width: fit-content; margin: 0 0 14px auto; }
+}
+
+/* 세로 화면(태블릿·휴대폰): 첫화면 그림이 이름표 아래에서 시작하도록 */
+@media (orientation: portrait) {
+  .title-art .scene-main { padding-top: max(6vh, 80px) !important; }
+}
+/* 휴대폰 세로: 이름표를 작게 */
+@media (max-width: 600px) and (orientation: portrait) {
+  .sense-tag { top: 10px; right: 10px; font-size: 15px; border-width: 3px; box-shadow: 0 3px 0 var(--wood-dark); }
+  .sense-tag .s-en { padding: 4px 8px; letter-spacing: 1px; }
+  .sense-tag .s-ko { padding: 4px 10px; }
+  .teacher-page .sense-tag, .teacher-page .sense-tag .s-en { font-size: 15px; }
+  .title-art .scene-main { padding-top: 58px !important; }
+}
