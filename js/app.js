@@ -6,6 +6,7 @@
 const App = {
   settings: null,
   done: new Set(),            // 완료한 구역 번호
+  progress: {},               // 하다가 나간 구역의 이어 할 자리 { 구역번호: 자리 } (새로고침하면 사라짐)
   lessonShown: false,
   bgm: null,
 
@@ -88,7 +89,7 @@ const App = {
   },
 
   /* ---------- 구역 완료 ---------- */
-  completeZone(id) { this.done.add(id); },
+  completeZone(id) { this.done.add(id); delete this.progress[id]; },   // 다 마치면 이어 할 자리도 지움 (다시 하기는 처음부터)
   allDone() { return this.settings.zones.every(id => this.done.has(id)); },
 
   /* 선택 구역을 모두 마쳤을 때 (마을로 돌아온 뒤 한 번) */

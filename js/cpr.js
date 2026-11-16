@@ -3,6 +3,7 @@
    발견 → 안전·반응(깨우고) → 119·AED 요청(알리고) → 호흡 확인(누르고)
    → 가슴 압박 방법 → 리듬 트레이너 30회 → AED(전원·패드·분석·충격 A/B) → 구급대 도착 → 수첩·배지
    그림은 cpr 폴더의 확정 그림만 사용. 대화창·팝업은 공통 미션 화면(Mission)을 함께 씀
+   중간에 지도로 나갔다 다시 들어오면 하던 단계부터 이어서 (AED 단계는 전원 켜기부터)
    ===================================================================== */
 const CPR = {
   get P() { return CONTENT.cpr; },
@@ -21,7 +22,23 @@ const CPR = {
     $('exitBtn').onclick = () => this.exitConfirm();
     setPlaceBackground(Mission.el, this.zone);
     this.stopMetronome();
-    this.discover();
+    const saved = App.progress[10];
+    if (saved) this.resume(saved); else this.discover();
+  },
+
+  /* ---------- 이어 하기 ---------- */
+  /* 단계 이름: quiz0·quiz1·quiz2(깨우고·알리고·누르고), method, rhythm, aed, arrival, notebook */
+  save(stage) { App.progress[10] = stage; },
+  resumeWhere(stage = App.progress[10]) {
+    const N = this.P.stepNames;
+    return { quiz0: N[0], quiz1: N[1], quiz2: N[2], method: N[3], rhythm: N[4], aed: N[5],
+      arrival: this.P.arrival.title, notebook: CONTENT.text.resumeNotebook }[stage] || '';
+  },
+  resume(stage) {
+    toast(fillText(CONTENT.text.resumeToast, { where: this.resumeWhere(stage) }));
+    ({ quiz0: () => this.quiz(0), quiz1: () => this.quiz(1), quiz2: () => this.quiz(2), method: () => this.method(),
+      rhythm: () => this.rhythmIntro(), aed: () => this.aedArrive(), arrival: () => this.arrival(),
+      notebook: () => this.notebook() }[stage] || (() => this.discover()))();
   },
 
   /* ---------- 화면 조각 ---------- */
@@ -71,6 +88,7 @@ const CPR = {
   /* ---------- 1. 깨우고 · 알리고 · 누르고 (3지선다) ---------- */
   quiz(k) {
     const P = this.P, q = P.quiz[k], T = CONTENT.text, nums = ['①', '②', '③'];
+    this.save('quiz' + k);
     const ask = () => {
       this.chip(k);
       this.turtle(); this.player('think');
@@ -112,6 +130,7 @@ const CPR = {
   /* ---------- 2. 가슴 압박 방법: 상체 정면 그림 위에 위치 표시 ---------- */
   method() {
     const P = this.P, m = P.method, a = m.area, T = CONTENT.text;
+    this.save('method');
     this.chip(3);
     this.turtle(); this.player('explain');
     const hi = `<div class="zone-hi" style="left:${a.x1}%;top:${a.y1}%;width:${a.x2 - a.x1}%;height:${a.y2 - a.y1}%"></div>
@@ -126,6 +145,7 @@ const CPR = {
   /* ---------- 3. 리듬 트레이너 ---------- */
   rhythmIntro() {
     const R = this.P.rhythm;
+    this.save('rhythm');
     this.chip(4);
     this.turtle(); this.hidePlayer();   // 촌장님 말은 아래 대화창에 나오므로 말풍선은 생략 (글상자 자리 확보)
     Mission.setMain(`<div class="board rhythm-guide">
@@ -271,6 +291,7 @@ const CPR = {
   },
   aedArrive() {
     const A = this.P.aed;
+    this.save('aed');
     this.chip(5);
     this.turtle(A.arrive.bubble); this.player('explain');
     const main = Mission.setMain(`<div class="complete-box">${this.aedFigure()}<div class="result hint" style="background:rgba(225,239,251,.96)"><span class="icon">💡</span><div>${esc(A.arrive.guide)}</div></div></div>`);
@@ -444,6 +465,7 @@ const CPR = {
   /* ---------- 5. 구급대 도착 → 수첩 → 완료 ---------- */
   arrival() {
     const V = this.P.arrival;
+    this.save('arrival');
     this.chip(null);
     this.turtle(V.bubble); this.hidePlayer();
     Mission.setMain(`<div class="cpr-row" style="display:flex;gap:18px;align-items:center">${this.pressScene(Math.min(300, innerHeight * 0.37))}
@@ -463,6 +485,8 @@ const CPR = {
   },
   notebook() {
     const T = CONTENT.text;
+    this.save('notebook');
+    this.chip(null);
     this.turtle(); this.player('explain');
     Mission.setMain(this.notebookHTML());
     Mission.setDialog({ name: T.notebookTitle, line: T.notebookGuide, action: { label: T.notebookDone, onClick: () => this.complete() } });
@@ -489,8 +513,10 @@ const CPR = {
   exitConfirm() {
     const T = CONTENT.text;
     if (Mission.$('mMain').querySelector('.badge')) return this.back();
+    const where = this.resumeWhere();
+    const note = where ? fillText(T.exitNoteResume, { where }) : T.exitNote;   // 아직 문제 전(발견 장면)이면 처음부터
     showPopup({
-      title: T.exitTitle, body: `<p style="text-align:center">${esc(T.exitNote)}</p>`,
+      title: T.exitTitle, body: `<p style="text-align:center">${esc(note)}</p>`,
       buttons: [{ label: T.exitContinue }, { label: T.exitConfirm, primary: true, onClick: () => this.back() }]
     });
   }

@@ -265,7 +265,7 @@ const Village = {
     if (near && App.settings.zones.includes(near.id)) {
       this.nearId = near.id; this.lockedToastId = null;
       btn.hidden = false;
-      btn.textContent = `${CONTENT.text.help} · ${near.name}${App.done.has(near.id) ? ' ' + CONTENT.text.replayTag : ''}`;
+      btn.textContent = `${CONTENT.text.help} · ${near.name}${App.done.has(near.id) ? ' ' + CONTENT.text.replayTag : App.progress[near.id] ? ' ' + CONTENT.text.continueTag : ''}`;
     } else {
       this.nearId = null; btn.hidden = true;
       if (near && this.lockedToastId !== near.id) { this.lockedToastId = near.id; toast(CONTENT.text.locked); }

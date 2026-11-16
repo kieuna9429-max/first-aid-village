@@ -622,7 +622,13 @@ window.CONTENT = {
     villageExitNote: "나가면 처음부터 다시 시작해야 합니다.",
     exitTitle: "미션에서 나갈까요?",
     exitNote: "나가면 이 미션은 처음부터 다시 해요.",
-    exitNoteRound2: "1라운드부터 다시 해요.",
+    /* ▼ 이어 하기 문구 (팀별 교차 검토 뒤 새로 씀 · 팀 검토 필요) {where}: 1라운드 / 2라운드 / 구급가방 / 수첩 / 10구역 단계 이름 */
+    exitNoteResume: "다시 들어오면 {where}부터 이어서 해요.",
+    resumeToast: "{where}부터 이어서 해요!",
+    continueTag: "(이어 하기)",
+    resumeBag: "구급가방",
+    resumeNotebook: "수첩",
+    /* ▲ 여기까지 새 문구 */
     exitContinue: "계속하기",
     exitConfirm: "나가기",
     reloadTitle: "처음부터 다시 시작해요",
