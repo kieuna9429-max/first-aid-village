@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>응급처치 마을 방범대(EB)</title>
+<script>
+  // 주소만 열었을 때(학생용 링크 정보가 하나도 없을 때)는 교사용 관리자 화면으로 보냄.
+  // 교사가 만든 학생 링크(?z=…&s=…&v=…)로 들어오면 그대로 학생 시작 화면이 열림.
+  if (!location.search) location.replace('teacher.html' + location.hash);
+</script>
 <link rel="stylesheet" href="css/fonts.css?v=20261111a">
 <link rel="stylesheet" href="css/common.css?v=20261111a">
 </head>
