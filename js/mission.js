@@ -2,7 +2,8 @@
    1~9구역 공통 미션 (mission.js)
    주민 대화 → ① 구급가방 → ② O/X → ③ 행동 선택
    → (6·9구역: 2라운드) → (6-2·8·9-2: 인계 장면) → 수첩 → 미션 완료·배지
-   중간에 지도로 나갔다 다시 들어오면 하던 라운드의 구급가방부터 (라운드를 다 풀었으면 수첩부터) 이어서
+   중간에 지도로 나갔다 다시 들어오면 하던 단계(구급가방·O/X·행동 선택)부터 이어서
+   (단계를 맞힌 뒤 나갔으면 그다음 단계부터, 라운드를 다 풀었으면 수첩부터)
    그림: hurt = 대화·문제 / care = 정답 피드백·수첩 / done = 미션 완료(1·2·3·4·5·7구역)
    ===================================================================== */
 const Mission = {
@@ -22,26 +23,30 @@ const Mission = {
     $('exitBtn').textContent = T.exit;
     $('exitBtn').onclick = () => this.exitConfirm();
     setPlaceBackground(this.el, this.zone);
+    this.$('mLine').style.fontWeight = '';   // O/X 중에 나갔을 때 굵은 글씨가 남지 않게
     const saved = App.progress[zoneId];
     if (saved) this.resume(saved); else this.talk();
   },
 
   /* ---------- 이어 하기 ---------- */
-  /* 이어 할 자리 기록: { ri: 라운드 번호(0·1), after: 라운드를 다 풀었으면 true } */
-  save(after = false) { App.progress[this.zone.id] = { ri: this.ri, after }; },
+  /* 이어 할 자리 기록: { ri: 라운드 번호(0·1), step: 'bag'(구급가방)·'ox'·'action'(행동 선택)·'after'(수첩·인계) } */
+  save(step, ri = this.ri) { App.progress[this.zone.id] = { ri, step }; },
   /* 지금 나가면 어디부터 이어 하는지 (팝업·안내 문구에 들어감) */
   resumeWhere(p = App.progress[this.zone.id]) {
     const T = CONTENT.text;
     if (!p) return '';
-    if (p.after) return T.resumeNotebook;
-    return this.zone.rounds.length === 2 ? `${p.ri + 1}라운드` : T.resumeBag;
+    if (p.step === 'after') return T.resumeNotebook;
+    const name = T.stepNames[['bag', 'ox', 'action'].indexOf(p.step)];
+    return (this.zone.rounds.length === 2 ? `${p.ri + 1}라운드 ` : '') + name;
   },
   resume(p) {
     const T = CONTENT.text;
     this.ri = p.ri;
     toast(fillText(T.resumeToast, { where: this.resumeWhere(p) }));
-    if (p.after) return this.round.handoff ? this.handoff() : this.notebook();
-    if (p.ri === 1) return this.roundChange();   // 2라운드: '상황이 바뀌었어요' 장면부터 다시 보여 주고 구급가방으로
+    if (p.step === 'after') return this.round.handoff ? this.handoff() : this.notebook();
+    if (p.step === 'ox') return this.ox();
+    if (p.step === 'action') return this.action();
+    if (p.ri === 1) return this.roundChange();   // 2라운드 구급가방: '상황이 바뀌었어요' 장면부터 다시 보여 주고 구급가방으로
     this.bag();
   },
 
@@ -132,7 +137,7 @@ const Mission = {
   bag() {
     const T = CONTENT.text, r = this.round, need = r.items.filter(i => i.correct).length;
     const picked = new Set();
-    this.save();
+    this.save('bag');
     this.setBar(1, T.stepNames[0]);
     this.setNpc('hurt'); this.setPlayer('kit');
     const main = this.setMain(`<div class="board" style="width:100%">
@@ -172,6 +177,7 @@ const Mission = {
   },
   bagRight() {
     const T = CONTENT.text, r = this.round, n = r.items.filter(i => i.correct).length;
+    this.save('ox');   // 구급가방을 맞혔으니 이제 나가도 O/X부터
     Sound.play('correct');
     this.setNpc('care', T.bagRightBubble); this.setPlayer('happy');
     const row = (it, ok) => `<div class="result ${ok ? 'ok' : 'no'} answer-row"><span class="icon">${ok ? '✓' : '✕'}</span>
@@ -187,6 +193,7 @@ const Mission = {
   ox() {
     const T = CONTENT.text, r = this.round;
     const sym = a => (a === 'O' ? '◯' : '×');
+    this.save('ox');
     this.setBar(2, T.stepNames[1]);
     this.setNpc('hurt'); this.setPlayer('think');
     const main = this.setMain(`<div style="display:flex;flex-direction:column;gap:18px;width:100%;align-items:center">
@@ -196,6 +203,7 @@ const Mission = {
     this.$('mLine').style.fontWeight = '700';
     main.querySelectorAll('.ox .btn').forEach(b => b.addEventListener('click', () => {
       if (b.dataset.a === r.ox.answer) {
+        this.save('action');   // O/X를 맞혔으니 이제 나가도 행동 선택부터
         Sound.play('correct');
         main.querySelectorAll('.ox .btn').forEach(x => { x.disabled = x !== b; });
         this.setNpc('care', T.oxRightBubble); this.setPlayer('happy');
@@ -220,6 +228,7 @@ const Mission = {
   /* ---------- ③ 행동 선택 ---------- */
   action() {
     const T = CONTENT.text, r = this.round, nums = ['①', '②', '③', '④'];
+    this.save('action');
     this.setBar(3, T.stepNames[2]);
     this.setNpc('hurt'); this.setPlayer('think');
     const main = this.setMain(`<div class="board" style="width:100%">
@@ -229,6 +238,8 @@ const Mission = {
     main.querySelectorAll('.choice').forEach(c => c.addEventListener('click', () => {
       const a = r.action[+c.dataset.i], res = main.querySelector('#actResult');
       if (a.correct) {
+        // 행동 선택을 맞혔으니 이제 나가도 다음으로 (6·9구역 1라운드 → 2라운드, 아니면 수첩·인계)
+        if (this.ri === 0 && this.zone.rounds.length === 2) this.save('bag', 1); else this.save('after');
         Sound.play('correct');
         c.classList.add('right');
         main.querySelectorAll('.choice').forEach(x => { x.disabled = true; });
@@ -256,7 +267,7 @@ const Mission = {
   roundChange() {
     const T = CONTENT.text;
     this.ri = 1;
-    this.save();   // 1라운드를 다 풀었으니 이제 나가도 2라운드부터
+    this.save('bag');   // 1라운드를 다 풀었으니 이제 나가도 2라운드부터
     this.setBar(0);
     this.setNpc('hurt'); this.setPlayer('surprised');
     this.setMain(`<div class="board"><p class="big-title">${esc(T.roundChangeTitle)}</p></div>`);
@@ -268,7 +279,7 @@ const Mission = {
   /* 6-2·8·9-2구역: 회복 장면 대신 인계 장면 */
   handoff() {
     const T = CONTENT.text, nearby = this.round.handoffNearby;   // 6-2구역은 주변 사람에게 알림, 8·9-2구역은 구급대원께 맡김
-    this.save(true);
+    this.save('after');
     if (CONTENT.sirenRounds.includes(this.roundId)) Sound.play('siren', 0.5);
     this.setBar(0);
     this.setNpc('care'); this.setPlayer(nearby ? 'explain' : 'call');
@@ -289,7 +300,7 @@ const Mission = {
   },
   notebook() {
     const T = CONTENT.text;
-    this.save(true);
+    this.save('after');
     this.setBar(0);
     this.setNpc('care'); this.setPlayer('explain');
     this.setMain(this.notebookHTML());
