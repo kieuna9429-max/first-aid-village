@@ -338,8 +338,11 @@ h1 { font-size: 34px; } h2 { font-size: 26px; } h3 { font-size: 22px; }
 .hud { position: absolute; z-index: 5; }
 .hud.top-left { left: 14px; top: 14px; display: flex; gap: 8px; }
 .badge-slots { position: absolute; z-index: 5; left: 14px; top: 188px; width: 200px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; padding: 5px; background: rgba(255, 243, 220, .92); border: 3px solid var(--wood); border-radius: 8px; }
-.badge-slot { aspect-ratio: 1; padding: 0; border: 0; background: none; cursor: pointer; }
-.badge-slot img { width: 100%; height: 100%; object-fit: contain; display: block; filter: grayscale(1); opacity: .55; }
+.badge-slot { padding: 0; border: 0; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+.badge-slot img { width: 100%; aspect-ratio: 1; object-fit: contain; display: block; filter: grayscale(1); opacity: .55; }
+.badge-slots { cursor: zoom-in; }
+.badge-slot .slot-num { font-family: var(--font-title); font-weight: 700; font-size: 11px; line-height: 1.1; color: var(--wood-dark); }
+.badge-slot:not(.done) .slot-num { color: #8a7f76; }
 .badge-slot.done img { filter: none; opacity: 1; }
 .hud.top-right { right: 14px; top: 14px; display: flex; gap: 8px; }
 .hud.bottom { left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; pointer-events: none; }
@@ -716,6 +719,13 @@ button { color: var(--ink); }
 .minimap:not(.big) { left: 14px; }
 @media (max-width: 600px) and (orientation: portrait) {
   .badge-slots { --slot: 27px; }
+}
+/* 배지 상자를 누르면 크게 (다시 누르면 원래 크기) */
+.badge-slots.big { --slot: 84px; gap: 8px; padding: 10px; z-index: 8; cursor: zoom-out; box-shadow: 0 6px 18px rgba(0, 0, 0, .3); }
+.badge-slots.big .slot-num { font-size: 16px; margin-top: 2px; }
+@media (max-width: 600px) and (orientation: portrait) {
+  .badge-slots.big { --slot: 56px; gap: 5px; }
+  .badge-slots.big .slot-num { font-size: 13px; }
 }
 
 /* =====================================================================

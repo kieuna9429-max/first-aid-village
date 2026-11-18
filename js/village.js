@@ -166,15 +166,25 @@ const Village = {
   /* 배지 칸: 받은 배지는 색깔, 못 받은 배지는 회색. 받은 배지를 누르면 그 구역 수첩이 열림 */
   drawBadges(sel) {
     const box = document.getElementById('badgeSlots'), T = CONTENT.text;
+    const big = box.classList.contains('big');
     box.innerHTML = sel.map(id => {
       const z = CONTENT.zones.find(x => x.id === id), done = App.done.has(id);
-      return `<button class="badge-slot${done ? ' done' : ''}" data-id="${id}" aria-label="${id}구역 ${esc(z.topic)} 배지 ${done ? '받음' : '아직 못 받음'}"><img src="assets/badges/${z.badge}.webp" alt=""></button>`;
+      return `<button class="badge-slot${done ? ' done' : ''}" data-id="${id}" aria-label="${id}구역 ${esc(z.topic)} 배지 ${done ? '받음' : '아직 못 받음'}"><img src="assets/badges/${z.badge}.webp" alt=""><span class="slot-num">${big ? id + '구역' : id}</span></button>`;
     }).join('');
     box.style.gridTemplateColumns = `repeat(${Math.min(Math.max(sel.length, 1), 5)}, var(--slot))`;   // 배지 수에 맞춘 폭 (한 줄 최대 5개)
-    box.querySelectorAll('.badge-slot').forEach(b => b.addEventListener('click', () => {
-      if (!b.classList.contains('done')) return toast(T.notebookLocked);
-      this.openNotebook(CONTENT.zones.find(x => x.id === +b.dataset.id));
-    }));
+    /* 배지 상자 누르기: 작을 때는 크게. 크게 보일 때 받은 배지를 누르면 그 구역 수첩, 다른 곳을 누르면 원래 크기로 */
+    if (!box.dataset.wired) {
+      box.dataset.wired = '1';
+      box.addEventListener('click', e => {
+        const slot = e.target.closest('.badge-slot');
+        if (box.classList.contains('big') && slot && slot.classList.contains('done')) {
+          return this.openNotebook(CONTENT.zones.find(x => x.id === +slot.dataset.id));
+        }
+        box.classList.toggle('big');
+        Sound.play('click', 0.4);
+        this.drawBadges(App.settings.zones);   // 큰 상자에서는 'N구역', 작은 상자에서는 숫자만 (위치도 다시 맞춤)
+      });
+    }
     this.stackHud();
   },
   /* 왼쪽 위: 미니맵(왼쪽) · 그 오른쪽에 모은 배지 칸, 바로 아래 배지 상자 */
@@ -193,6 +203,11 @@ const Village = {
     hud.style.left = right + 'px';
     box.style.left = right + 'px';
     box.style.top = (y0 + cnt.offsetHeight + 6) + 'px';
+    // 크게 본 배지 상자가 화면 오른쪽 밖으로 나가면(휴대폰 세로) 미니맵 바로 아래로 옮김
+    if (box.classList.contains('big') && box.getBoundingClientRect().right > vr.right - 8) {
+      box.style.left = x0 + 'px';
+      box.style.top = (y0 + (this.mm ? this.mm.offsetHeight : 0) + 6) + 'px';
+    }
   },
 
   openNotebook(z, back) {
