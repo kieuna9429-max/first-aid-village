@@ -528,7 +528,7 @@ window.CONTENT = {
     aedButtons: { power: { x: 35.6, y: 65.0, r: 6 }, shock: { x: 64.2, y: 65.1, r: 6 } },   // aed_device 그림의 초록·주황 버튼 (%)
     voiceShock: "심장 충격이 필요합니다. 모두 환자에게서 떨어지세요. 깜빡이는 충격 버튼을 누르세요.",
     voiceNoShock: "심장 충격이 필요하지 않습니다. 가슴 압박을 계속하세요.",
-    stepNames: ["깨우고", "알리고", "누르고", "가슴 압박 방법", "리듬 연습", "자동 심장 충격기(AED)"],
+    stepNames: ["1단계", "2단계", "3단계", "가슴 압박 방법", "리듬 연습", "자동 심장 충격기(AED)"],
     countLabel: "전체 압박 {n} / 30",
     goodLabel: "좋아요 {n}회",
     nextHint: "다음으로 ▶",
